@@ -1,5 +1,5 @@
 function x_rows= ...
-MDOF_Visc_Free_Response(M,C, EigValues_mat, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row)
+MDOF_Free_Response_Visc(M,C, EigValues_mat, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row)
 
 N=size(EigVectors_Normalized,1);
 n_col=size(t_row,2);

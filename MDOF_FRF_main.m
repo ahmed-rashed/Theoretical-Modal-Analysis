@@ -31,7 +31,7 @@ w_column=2*pi*f_column;
 
 %Fast FRF calculation
 [M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
-[EigVectors_Normalized, EigValues_mat]=MDOF_Visc_Eig(M, C, K);
+[EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K);
 H_w_n_m_cols=MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row,plot_SDOF_FRFs);
 
 for ii=1:length(n_row)
@@ -64,7 +64,7 @@ export_figure([3:14],'',filenames)
 c_vec=8*ones(1,N+1)*10;
 %Fast FRF calculation
 [M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
-[EigVectors_Normalized, EigValues_mat]=MDOF_Visc_Eig(M, C, K);
+[EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K);
 MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row,plot_SDOF_FRFs);
 export_figure([15:16],'==',{'MDOF-FRFMag_ModalSuperPos1';'FRF-Nyq_ModalSuperPos1'})
 

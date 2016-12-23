@@ -19,7 +19,7 @@ n_f_points=length(f_column);
 
 w_column=2*pi*f_column;
 
-[EigVectors_Normalized, EigValues_mat]=MDOF_Visc_Eig(M, C, K,isProportional,display_EVD_Details);
+[EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K,isProportional,display_EVD_Details);
 
 [w_r_vec, zeta_r_vec, w_d_r_vec]=MDOF_Modal_Param_Visc(EigValues_mat)
 
@@ -60,7 +60,7 @@ for ii=1:N
 end
 
 %Free response
-x_rows=MDOF_Visc_Free_Response(M,C, EigValues_mat, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row);
+x_rows=MDOF_Free_Response_Visc(M,C, EigValues_mat, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row);
 figure
 plotResponse_ForceVertically(t_row,x_rows,x_rows_Y_label_col,[],[],['Free response']);
 

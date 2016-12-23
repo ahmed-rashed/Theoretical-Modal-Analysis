@@ -85,7 +85,7 @@ N_zeta=length(zeta_vec);
 filenames=cell(N_zeta,1);
 y_road_func=@(t_row,w_0) Y_road*sin(w_0*t_row);
 for n=1:N_zeta
-    y_func=@(t_row,w_0) 2*Y_road*zeta_vec(n)*w_n*SDOF_Harmonic_Response_Visc_mul_m_dot(Y_road, w_0, w_n, zeta_vec(n), t_row, ignoreTransient) ...
+    y_func=@(t_row,w_0) 2*Y_road*zeta_vec(n)*w_n*SDOF_Harmonic_Response_dot_Visc_mul_m(Y_road, w_0, w_n, zeta_vec(n), t_row, ignoreTransient) ...
                           + Y_road*w_n^2*SDOF_Harmonic_Response_Visc_mul_m(Y_road, w_0, w_n, zeta_vec(n), t_row, ignoreTransient);
 
     w_d=w_n*sqrt(1-zeta_vec(n)^2);

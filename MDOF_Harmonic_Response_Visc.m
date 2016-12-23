@@ -15,7 +15,7 @@ semiCol2=zeros(N,n_col);
 for r=1:2:2*N-1
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
     for jj=1:N
-        semiCol1(jj,:)=SDOF_Harmonic_Response_Visc_mul_m_dot(F0_col(jj), w_0_col(jj), w_r_vec((r+1)/2), zeta_r_vec((r+1)/2), t_row,ignoreTransient);
+        semiCol1(jj,:)=SDOF_Harmonic_Response_dot_Visc_mul_m(F0_col(jj), w_0_col(jj), w_r_vec((r+1)/2), zeta_r_vec((r+1)/2), t_row,ignoreTransient);
         semiCol2(jj,:)=SDOF_Harmonic_Response_Visc_mul_m(F0_col(jj), w_0_col(jj), w_r_vec((r+1)/2), zeta_r_vec((r+1)/2), t_row,ignoreTransient);
     end
     x_rows=x_rows+real(A_r)*semiCol1-(real(EigValues_mat(r,r))*real(A_r)+imag(EigValues_mat(r,r))*imag(A_r))*semiCol2;
