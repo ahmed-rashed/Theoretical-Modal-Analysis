@@ -72,10 +72,10 @@ for ii=1:length(zeta_vec)
 
     H_temp_vec=H_vec;
     if zeta_vec(ii)==0
-        H_temp_vec(real(H_vec)<ax_Lims_Nyq(1))=nan+i*nan;
-        H_temp_vec(real(H_vec)>ax_Lims_Nyq(2))=nan+i*nan;
-        H_temp_vec(imag(H_vec)<ax_Lims_Nyq(3))=nan+i*nan;
-        H_temp_vec(imag(H_vec)>ax_Lims_Nyq(4))=nan+i*nan;
+        H_temp_vec(real(H_vec)<ax_Lims_Nyq(1))=nan+1i*nan;
+        H_temp_vec(real(H_vec)>ax_Lims_Nyq(2))=nan+1i*nan;
+        H_temp_vec(imag(H_vec)<ax_Lims_Nyq(3))=nan+1i*nan;
+        H_temp_vec(imag(H_vec)>ax_Lims_Nyq(4))=nan+1i*nan;
     end
     
     figure(Fig_3D)
@@ -92,9 +92,9 @@ for ii=1:length(zeta_vec)
     
     if zeta_vec(ii)==0
         legend_str(ii)=cellstr(['$',zeta_subtitle,'=0;\;\textrm{misleading}$']);
-    elseif zeta_vec(ii)==1/sqrt(2),
+    elseif zeta_vec(ii)==1/sqrt(2)
         legend_str(ii)=cellstr(['$',zeta_subtitle,'=1/\sqrt{2}$']);
-    elseif zeta_vec(ii)==sqrt(2),
+    elseif zeta_vec(ii)==sqrt(2)
         legend_str(ii)=cellstr(['$',zeta_subtitle,'=\sqrt{2}$']);
     else
         legend_str(ii)=cellstr(['$',zeta_subtitle,'=',num2str(zeta_vec(ii)),'$']);
