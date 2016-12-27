@@ -46,7 +46,7 @@ for n=1:N_signals
         AX(2).Box='off';
         AX(1).XAxis.Visible='on';
         AX(2).XAxis.Visible='on';
-        AX(2).XAxisLocation='top'
+        AX(2).XAxisLocation='top';
         set(AX(2),'XTickLabel',[]);
         
         AX1(n)=AX(1);
