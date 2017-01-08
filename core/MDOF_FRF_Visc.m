@@ -20,9 +20,9 @@ if (any(size(n_row)~=size(m_row)));error('Dimensions of n_row and m_row must be 
 i_col=size(n_row,2);
 
 if plot_SDOF_FRFs
-    ax_mag=zeros(1,i_col);
-    ax_phase=zeros(1,i_col);
-    ax_Nyq=zeros(1,i_col);
+    ax_mag=gobjects(1,i_col);
+    ax_phase=gobjects(1,i_col);
+    ax_Nyq=gobjects(1,i_col);
     FigMag=figure;
     FigNyq=figure;
     for ii=1:i_col
