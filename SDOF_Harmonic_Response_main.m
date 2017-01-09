@@ -1,6 +1,4 @@
-function SDOF_HarmonicResponse_main()
-set(groot,'DefaultLineLineWidth',1);
-
+clearvars
 clc
 close all
 
@@ -13,37 +11,32 @@ F0=1;
 t_row=linspace(0,t_final,n_points);
 
 %% Undamped SDOF
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 zeta=0;
 w_0_vec=[.1,.9,1,1.1,2]*w_n;
 ignoreTransient=true;
 x_func=@(t_row,w_0) SDOF_Harmonic_Response_Visc_mul_m(F0, w_0, w_n, zeta, t_row,ignoreTransient)/m;
 F_func=@(t_row,w_0) sin(w_0*t_row);
-figure;SDOF_PlotHarmonicResponse(t_row,x_func,F_func,w_n,zeta,w_0_vec,'$f(t)=\sin(\omega_{0}t)$','$f(t)$',{'$x(t)$'},false,ignoreTransient);
-figure;SDOF_PlotHarmonicResponse(t_row,x_func,F_func,w_n,zeta,w_0_vec,'$f(t)=\sin(\omega_{0}t)$','$f(t)$',{'$x(t)$'},true,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,w_0_vec,'f(t)=\sin(\omega_{0}t)','f(t)','x(t)',false,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,w_0_vec,'f(t)=\sin(\omega_{0}t)','f(t)','x(t)',true,ignoreTransient);
 
 ignoreTransient=false;
 x_func=@(t_row,w_0) SDOF_Harmonic_Response_Visc_mul_m(F0, w_0, w_n, zeta, t_row,ignoreTransient)/m;
-figure;SDOF_PlotHarmonicResponse(t_row,x_func,F_func,w_n,zeta,w_0_vec,'$f(t)=\sin(\omega_{0}t)$','$f(t)$',{'$x(t)$'},false,ignoreTransient);
-figure;SDOF_PlotHarmonicResponse(t_row,x_func,F_func,w_n,zeta,w_0_vec,'$f(t)=\sin(\omega_{0}t)$','$f(t)$',{'$x(t)$'},true,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,w_0_vec,'f(t)=\sin(\omega_{0}t)','f(t)','x(t)',false,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,w_0_vec,'f(t)=\sin(\omega_{0}t)','f(t)','x(t)',true,ignoreTransient);
 export_figure(max(double(get(groot, 'Children')))+[-4:-1]+1,'||',{'Undamped1','Undamped2','Undamped3','Undamped4'})
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%Damped SDOF
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Damped SDOF
 zeta_vec=[0.1,0.3];
 N_zeta=length(zeta_vec);
 for n=1:N_zeta
     w_0_vec(2)=sqrt(1-2*zeta_vec(n)^2)*w_n;
     ignoreTransient=false;
     x_func=@(t_row,w_0) SDOF_Harmonic_Response_Visc_mul_m(F0, w_0, w_n, zeta_vec(n), t_row,ignoreTransient)/m;
-    figure;SDOF_PlotHarmonicResponse(t_row,x_func,F_func,w_n,zeta_vec(n),w_0_vec,'$f(t)=\sin(\omega_{0}t)$','$f(t)$',{'$x(t)$'},true,ignoreTransient);
+    figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta_vec(n),w_0_vec,'f(t)=\sin(\omega_{0}t)','f(t)','x(t)',true,ignoreTransient);
     export_figure(max(double(get(groot, 'Children'))),'||',{['Damped',num2str(n)]})
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Vibration Sensor
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 n_points=1000;
 t_row=linspace(0,t_final,n_points);
 w_0_vec=[0.1,0.4,0.6,3,5]*w_n;
@@ -61,19 +54,17 @@ for n=1:N_zeta
 
     %Vibrometer response
     figure
-    SDOF_PlotHarmonicResponse(t_row,@(t_row,w_0) q_func(t_row+1.5*2*pi/w_0,w_0),Disp_base_func,w_n,zeta_vec(n),w_0_vec,'$y_{\textrm{Base}}(t)=\sin(\omega_{0}t)$','$y_{\textrm{Base}}(t)$',{'$q(t+1.5T_{0})$'},sameScale_y1,ignoreTransient);
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+1.5*2*pi/w_0,w_0),Disp_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\textrm{Base}}(t)=\sin(\omega_{0}t)','y_{\textrm{Base}}(t)','q(t+1.5T_{0})',sameScale_y1,ignoreTransient);
     filenames{2*n-1}=['Vibrometer',int2str(n)];
 
     %Accelerometer response
     figure
-    SDOF_PlotHarmonicResponse(t_row,@(t_row,w_0) q_func(t_row+.5*2*pi/w_0,w_0),Acc_base_func,w_n,zeta_vec(n),w_0_vec,'$y_{\textrm{Base}}(t)=\sin(\omega_{0}t)$','$\ddot{y}_{\textrm{Base}}(t)$',{'$q(t+0.5T_{0})$'},sameScale_y1,ignoreTransient);                                 
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+.5*2*pi/w_0,w_0),Acc_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\textrm{Base}}(t)=\sin(\omega_{0}t)','\ddot{y}_{\textrm{Base}}(t)','q(t+0.5T_{0})',sameScale_y1,ignoreTransient);                                 
     filenames{2*n}=['Accelerometer',int2str(n)];
 end
 export_figure(max(double(get(groot, 'Children')))+[-2*N_zeta:-1]+1,'||',filenames)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Moving vehicle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 w_0_vec=[0.5,0.9,1,1.1,sqrt(2),2.5]*w_n;
 
 Y_road=1;
@@ -88,12 +79,8 @@ for n=1:N_zeta
                           + Y_road*w_n^2*SDOF_Harmonic_Response_Visc_mul_m(Y_road, w_0, w_n, zeta_vec(n), t_row, ignoreTransient);
 
     figure
-    SDOF_PlotHarmonicResponse(t_row,y_func,y_road_func,w_n,zeta_vec(n),w_0_vec,'$y_{\textrm{Road}}(t)=\sin(\omega_{0}t)$','$y_{\textrm{Road}}(t)$',{'$y(t)$'},sameScale_y1,ignoreTransient);
+    SDOF_Plot_Harmonic_Response(t_row,y_func,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\textrm{Road}}(t)=\sin(\omega_{0}t)','y_{\textrm{Road}}(t)','y(t)',sameScale_y1,ignoreTransient);
                                  
     filenames{n}=['Vehicle',int2str(n)];
 end
 export_figure(max(double(get(groot, 'Children')))+[-N_zeta:-1]+1,'||',filenames)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%
-set(groot,'DefaultLineLineWidth','remove')

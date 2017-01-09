@@ -1,5 +1,29 @@
-function SDOF_PlotFRF(r_vec,H_func,zeta_vec,r_label,zeta_subtitle,H_subtitle, ...
-                  DispMagLines,r_peaks,H_mag_peaks,r_special,maxPhaseLag)   %Optional arguments
+function SDOF_PlotFRF(r_vec,H_func,zeta_vec, ...
+                  r_label,zeta_subtitle,H_subtitle,DispMagLines,r_peaks,H_mag_peaks,r_special,maxPhaseLag)   %Optional arguments
+
+if nargin<4
+    r_label='$r$';
+else
+    if isempty(r_label)
+        r_label='$r$';
+    end
+end
+
+if nargin<5
+    zeta_subtitle='\zeta';
+else
+    if isempty(zeta_subtitle)
+        zeta_subtitle='\zeta';
+    end
+end
+
+if nargin<6
+    H_subtitle='H';
+else
+    if isempty(H_subtitle)
+        H_subtitle='H';
+    end
+end
 
 if nargin<7
     DispMagLines=false;

@@ -140,9 +140,9 @@ for ignoreTransient=ignoreTransientVector
         f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,1}^{\textrm{AR}}}$';
         f_rows_labels_col{end}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,2}^{\min}}$';
         figure
-        plotResponse_ForceVertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure
-        plotResponse_ForceVertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
     end
 end
 
@@ -184,8 +184,8 @@ for ignoreTransient=ignoreTransientVector
         f_rows_labels_col{1}='$f_{2} (t),:\Omega_{2}=\omega_{H_{1,2}^{\min}}$';
         f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{H_{2,2}^{\textrm{AR}}}$';
         figure
-        plotResponse_ForceVertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure
-        plotResponse_ForceVertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
     end
 end

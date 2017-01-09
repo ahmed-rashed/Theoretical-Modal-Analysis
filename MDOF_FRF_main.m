@@ -1,4 +1,4 @@
-function MDOF_FRF_main()
+clearvars
 clc
 close all
 
@@ -25,11 +25,11 @@ m_row=[1,2,3];
 f_column=linspace(0,f_final,n_f).';
 w_column=2*pi*f_column;
 
-%Slow FRF calculation
+%% Slow FRF calculation
 %[M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M, C, K, w), w_column, N, n_row, m_row);
 %[M,D,K]=N_DOF_sys(.5*m_vec,d_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Hyst(M, D, K, w), w_column, N, n_row, m_row);
 
-%Fast FRF calculation
+%% Fast FRF calculation
 [M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
 [EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K);
 H_w_n_m_cols=MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row,plot_SDOF_FRFs);
@@ -62,7 +62,7 @@ filenames={'FRF-3D-1';'FRF-RealImag-1';'FRF-Nyq-1';'MDOF-FRFMag1'
 export_figure([3:14],'',filenames)
 
 c_vec=8*ones(1,N+1)*10;
-%Fast FRF calculation
+%% Fast FRF calculation
 [M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
 [EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K);
 MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row,plot_SDOF_FRFs);
