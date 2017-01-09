@@ -6,3 +6,5 @@ if zeta~=1
 else
     h_m_vec=exp(-w_n*t_vec).*t_vec;
 end
+
+h_m_vec(t_vec<0)=0;

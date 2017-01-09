@@ -13,7 +13,7 @@ else
 end
 
 if ignoreTransient
-    x_new_label_rows=strrep(x_label_rows,'(','_{\textrm{ss}}(');
+    x_new_label_rows=strrep(x_label_rows,'(','_{\mathrm{ss}}(');
 else
     x_new_label_rows=x_label_rows;
 end

@@ -104,8 +104,8 @@ if all(all(abs(C)<=10000*eps))
 end
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\textrm{ss}}(');
-        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\textrm{ss}}(');
+        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
         x_new_ylabel_col=x_ylabel_col;
@@ -137,7 +137,7 @@ for ignoreTransient=ignoreTransientVector
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
-        f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,1}^{\textrm{AR}}}$';
+        f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,1}^{\mathrm{AR}}}$';
         f_rows_labels_col{end}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,2}^{\min}}$';
         figure
         plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
@@ -152,8 +152,8 @@ F_0_col(2)=1;
 w_F2=[w_H_12_min/w_r_vec(2),w_H_22_AR/w_r_vec(2),0.95,1,1.05,1.5]*w_r_vec(2);
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\textrm{ss}}(');
-        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\textrm{ss}}(');
+        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
         x_new_ylabel_col=x_ylabel_col;
@@ -182,7 +182,7 @@ for ignoreTransient=ignoreTransientVector
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
         f_rows_labels_col{1}='$f_{2} (t),:\Omega_{2}=\omega_{H_{1,2}^{\min}}$';
-        f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{H_{2,2}^{\textrm{AR}}}$';
+        f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{H_{2,2}^{\mathrm{AR}}}$';
         figure
         plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure

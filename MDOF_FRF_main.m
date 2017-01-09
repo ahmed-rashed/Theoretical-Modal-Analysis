@@ -50,7 +50,7 @@ for ii=1:length(n_row)
     figure
     ax_mag=subplot(4,1,[1,2,3]);
     ax_phase=subplot(4,1,4);
-    plot_FRF_mag_phase(f_column,H_w_n_m_cols(:,ii),islin,ax_mag,ax_phase,'',H_subtitle,[]);
+    plot_FRF_mag_phase(f_column,H_w_n_m_cols(:,ii),islin,ax_mag,ax_phase,'',H_subtitle);
 end
 
 export_figure([1:2],'==',{'MDOF-FRFMag_ModalSuperPos';'FRF-Nyq_ModalSuperPos'})
@@ -61,8 +61,8 @@ filenames={'FRF-3D-1';'FRF-RealImag-1';'FRF-Nyq-1';'MDOF-FRFMag1'
 
 export_figure([3:14],'',filenames)
 
-c_vec=8*ones(1,N+1)*10;
 %% Fast FRF calculation
+c_vec=8*ones(1,N+1)*10;
 [M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
 [EigVectors_Normalized, EigValues_mat]=MDOF_Eig_Visc(M, C, K);
 MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row,plot_SDOF_FRFs);

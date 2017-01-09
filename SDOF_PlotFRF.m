@@ -115,7 +115,7 @@ for ii=1:length(zeta_vec)
     plot_FRF_mag_phase(r_vec,H_vec,[false,false],ax_mag3,ax_phase3,r_label,H_subtitle,DispMagLines,maxPhaseLag);
     
     if zeta_vec(ii)==0
-        legend_str(ii)=cellstr(['$',zeta_subtitle,'=0;\;\textrm{misleading}$']);
+        legend_str(ii)=cellstr(['$',zeta_subtitle,'=0;\;\mathrm{misleading}$']);
     elseif zeta_vec(ii)==1/sqrt(2)
         legend_str(ii)=cellstr(['$',zeta_subtitle,'=1/\sqrt{2}$']);
     elseif zeta_vec(ii)==sqrt(2)
@@ -132,10 +132,12 @@ if nargin>8 && ~isempty(r_peaks)
     plot(ax_mag1,r_peaks,H_mag_peaks,'-k','LineWidth',.5);
 end
 
-if nargin>10 && ~isempty(r_special)
-    xticks=get(ax_mag1,'XTick');
-    set(ax_mag1,'XTick',sort(unique([xticks,r_special])));
-    set(ax_phase1,'XTick',sort(unique([xticks,r_special])));
+if nargin>9
+    if ~isempty(r_special)
+        xticks=get(ax_mag1,'XTick');
+        set(ax_mag1,'XTick',sort(unique([xticks,r_special])));
+        set(ax_phase1,'XTick',sort(unique([xticks,r_special])));
+    end
 end
 
 figure(Fig_3D)
