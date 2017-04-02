@@ -15,7 +15,7 @@ if nargin<7
 end
 
 N=size(EigVectors_Normalized,1);
-n_f=size(w_column,1);
+n_w=size(w_column,1);
 if (any(size(n_row)~=size(m_row)));error('Dimensions of n_row and m_row must be identical');end
 i_col=size(n_row,2);
 
@@ -35,8 +35,8 @@ if plot_SDOF_FRFs
     end
 end
 
-H_w_n_m_cols_SDOF=zeros(n_f,i_col);
-H_w_n_m_cols=zeros(n_f,i_col);
+H_w_n_m_cols_SDOF=zeros(n_w,i_col);
+H_w_n_m_cols=zeros(n_w,i_col);
 A_ind_row=sub2ind([N,N],n_row,m_row);
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
@@ -58,7 +58,7 @@ for r=1:2*N
     end
     
     H_w_n_m_cols=H_w_n_m_cols+H_w_n_m_cols_SDOF;
-    H_w_n_m_cols_SDOF=zeros(n_f,i_col);
+    H_w_n_m_cols_SDOF=zeros(n_w,i_col);
 end
 
 if plot_SDOF_FRFs

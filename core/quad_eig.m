@@ -1,17 +1,17 @@
-function [Epsi_normalized,Val_mat]=quad_eig(K,C,M)
+function [Epsi_normalized,Val_mat]=quad_eig(K_mat,C_mat,M_mat)
 
 L=2;    %Linearization type; 1 or 2
 
-n=size(M,1);
+n=size(M_mat,1);
 
 if L==1 %L1 form
-    NN=-K;
-    A=[0*M,NN;-K,-C];
-    B=[NN,0*M;0*M,M];
+    N_mat=-K_mat;
+    A=[0*M_mat,N_mat;-K_mat,-C_mat];
+    B=[N_mat,0*M_mat;0*M_mat,M_mat];
 elseif L==2 %L2 form
-    NN=M;
-    A=[-K,0*M;0*M,NN];
-    B=[C,M;NN,0*M];
+    N_mat=M_mat;
+    A=[-K_mat,0*M_mat;0*M_mat,N_mat];
+    B=[C_mat,M_mat;N_mat,0*M_mat];
 end
 
 [Phi,Val_mat] = eig(A,B);
@@ -22,7 +22,7 @@ EigValues_prec=eps*2*n*max(abs(diag(Val_mat)));
 
 %     if any(diag(Val_mat)>=EigValues_prec)
 %         Val_mat,
-%         error('The matrix pencil (-K,M) must be negative semi definite. That is; eigenvalues must be >=0')
+%         error('The matrix pencil (-K_mat,M_mat) must be negative semi definite. That is; eigenvalues must be >=0')
 %     end
 
 IndexTemp=find(abs(diag(Val_mat))<=EigValues_prec);

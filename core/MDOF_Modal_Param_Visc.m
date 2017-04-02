@@ -22,5 +22,4 @@ zeta_r_col(UnderDamped_Ind)=-real(EigValues_vec(UnderDamped_2N_Ind))./w_r_col(Un
 zeta_r_col(OverDamped_Ind)=sqrt(1./(1-((EigValues_vec(OverDamped_2N_Ind)-EigValues_vec(OverDamped_2N_Ind+1))./(EigValues_vec(OverDamped_2N_Ind)+EigValues_vec(OverDamped_2N_Ind+1))).^2));
 w_r_col(OverDamped_Ind)=-(EigValues_vec(OverDamped_2N_Ind)+EigValues_vec(OverDamped_2N_Ind+1))/2./zeta_r_col(OverDamped_Ind);
 
-
 w_d_r_col(UnderDamped_Ind)=w_r_col(UnderDamped_Ind).*sqrt(1-zeta_r_col(UnderDamped_Ind).^2);

@@ -14,7 +14,7 @@ if isPropotional || all(all(C==0))    %Undamped or proportional
     [EigVectors_U,EigValues_U_mat]=eig(-K,M);
     
     %Sort eigenvalues and corresponding eignvectors
-    [Temp_Val,Index]=sort(abs(diag(EigValues_U_mat)));
+    [~,Index]=sort(abs(diag(EigValues_U_mat)));
     EigValues_U_mat=EigValues_U_mat(Index,Index);
     EigVectors_U=EigVectors_U(:,Index);
 
@@ -27,8 +27,12 @@ if isPropotional || all(all(C==0))    %Undamped or proportional
         error('The matrix pencil (-K,M) must be negative semi definite. That is; eigenvalues must be >=0')
     end
 
-    diag(EigValues_U_mat),
-    EigVectors_U,
+    EigValues_U_mat,
+    EigVectors_U_temp=EigVectors_U;
+    for ii=1:N
+        EigVectors_U_temp(:,ii)=EigVectors_U_temp(:,ii)/EigVectors_U_temp(1,ii);
+    end
+    EigVectors_U_temp
     IndexTemp=find(abs(diag(EigValues_U_mat))<=EigValues_prec);
     if ~isempty(IndexTemp)
         warning('Calculated eigenvalues are inaccurate.')
@@ -77,7 +81,7 @@ else    %Non-proportional
     [EigVectors_Normalized,EigValues_mat]=quad_eig(K,C,M);
     
     %Sort eigenvalues and corresponding eignvectors
-    [Temp_Val,Index]=sort(abs(imag(diag(EigValues_mat))));
+    [~,Index]=sort(abs(imag(diag(EigValues_mat))));
     EigValues_mat=EigValues_mat(Index,Index);
     EigVectors_Normalized=EigVectors_Normalized(:,Index);
 end
