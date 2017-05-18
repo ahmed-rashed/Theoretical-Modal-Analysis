@@ -1,5 +1,5 @@
 function H_w_n_m_cols= ...
-MDOF_FRF_Visc(EigValues_mat, EigVectors_Normalized, w_column, n_row, m_row, ...
+MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_column, n_row, m_row, ...
 		      plot_SDOF_FRFs,maxPhaseLag)	 %Optional arguments
 
 if nargin<6
@@ -41,9 +41,9 @@ A_ind_row=sub2ind([N,N],n_row,m_row);
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
     A_r_temp_row=A_r(A_ind_row);
-    H_w_n_m_cols_SDOF=H_w_n_m_cols_SDOF+(1./(1i*w_column-EigValues_mat(r,r)))*A_r_temp_row;
+    H_w_n_m_cols_SDOF=H_w_n_m_cols_SDOF+(1./(1i*w_column-EigValues_vec(r)))*A_r_temp_row;
     
-    if imag(EigValues_mat(r,r))~=0 && mod(r,2)~=0   %complex eigenvalue and odd r
+    if imag(EigValues_vec(r))~=0 && mod(r,2)~=0   %complex eigenvalue and odd r
         continue
     else     %real eigenvalue or even r
         if plot_SDOF_FRFs

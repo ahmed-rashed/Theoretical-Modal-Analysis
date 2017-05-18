@@ -1,8 +1,8 @@
-function [Epsi_normalized,Val_mat]=quad_eig(K_mat,C_mat,M_mat)
+function [Epsi_normalized,Val_vec]=quad_eig(K_mat,C_mat,M_mat)
 
 L=2;    %Linearization type; 1 or 2
 
-n=size(M_mat,1);
+N=size(M_mat,1);
 
 if L==1 %L1 form
     N_mat=-K_mat;
@@ -15,37 +15,42 @@ elseif L==2 %L2 form
 end
 
 [Phi,Val_mat] = eig(A,B);
+Val_vec=diag(Val_mat);
 
 %Check the accuracy of eigendecomposition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-EigValues_prec=eps*2*n*max(abs(diag(Val_mat)));
+EigValues_prec=eps*2*N*max(abs(Val_vec));
 
-%     if any(diag(Val_mat)>=EigValues_prec)
-%         Val_mat,
+%     if any(Val_vec>=EigValues_prec)
+%         Val_vec,
 %         error('The matrix pencil (-K_mat,M_mat) must be negative semi definite. That is; eigenvalues must be >=0')
 %     end
 
-IndexTemp=find(abs(diag(Val_mat))<=EigValues_prec);
+IndexTemp=find(abs(Val_vec)<=EigValues_prec);
 if ~isempty(IndexTemp)
-    diag(Val_mat),
+    Val_vec,
     Phi,
 
     warning('Calculated eigenvalues are inaccurate.')
     warning('Small eigenvalues and small elements in eigenvectors are manually reset to zero as follows:')
     disp('Press any key to continue');pause
 
-    Val_mat(IndexTemp,IndexTemp)=0;diag(Val_mat)
+    Val_vec(IndexTemp)=0
     Phi(abs(Phi)<EigValues_prec)=0
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-B_r_mat=Phi.'*B*Phi;
-B_r_mat(abs(B_r_mat)<100*eps)=0;
+B_r_vec=diag(Phi.'*B*Phi);
 
+Phi_normalized=Phi;
 if L==1 %L1
-    Phi_normalized=Phi*sqrt(Val_mat/B_r_mat);
+	for ii=1:2*N
+		Phi_normalized(:,ii)=Phi_normalized(:,ii)*sqrt(Val_vec(ii)/B_r_vec(ii));
+	end
 elseif L==2 %L2
-    Phi_normalized=Phi/sqrt(B_r_mat);
+	for ii=1:2*N
+		Phi_normalized(:,ii)=Phi_normalized(:,ii)/sqrt(B_r_vec(ii));
+	end
 end
 
-Epsi_normalized=Phi_normalized(1:n,:);
+Epsi_normalized=Phi_normalized(1:N,:);

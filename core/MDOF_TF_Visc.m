@@ -1,6 +1,6 @@
-function H_s_mat=MDOF_TF_Visc(EigValues_mat, EigVectors_Normalized)
+function H_s_mat=MDOF_TF_Visc(EigValues_vec, EigVectors_Normalized)
 
-temp=abs(diag(EigValues_mat));
+temp=abs(EigValues_vec);
 if max(abs(temp(1:2:end)-temp(2:2:end)))>100*eps
     error('This function is designed for complex conjugate poles. Please upgrade this function for a general case poles');
 end
@@ -14,10 +14,10 @@ H_s_mat_SDOF=tf(num,den);
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
     num=num2cell(A_r);
-    den=[1,-EigValues_mat(r,r)];
+    den=[1,-EigValues_vec(r)];
     H_s_mat_SDOF=H_s_mat_SDOF+tf(num,den);
     
-    if imag(EigValues_mat(r,r))~=0 && mod(r,2)~=0   %complex eigenvalue and odd r
+    if imag(EigValues_vec(r))~=0 && mod(r,2)~=0   %complex eigenvalue and odd r
         continue
     end
 

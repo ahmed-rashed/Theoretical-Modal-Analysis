@@ -1,5 +1,5 @@
 function h_cols= ...
-MDOF_IRF_Visc(EigValues_mat, EigVectors_Normalized, t_column, n_row, m_row)
+MDOF_IRF_Visc(EigValues_vec, EigVectors_Normalized, t_column, n_row, m_row)
 
 N=size(EigVectors_Normalized,1);
 n=size(t_column,1);
@@ -11,10 +11,10 @@ A_ind_row=sub2ind([N,N],n_row,m_row);
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
     A_r_temp_row=A_r(A_ind_row);
-    h_cols=h_cols+exp(EigValues_mat(r,r)*t_column)*A_r_temp_row;
+    h_cols=h_cols+exp(EigValues_vec(r)*t_column)*A_r_temp_row;
     
 % %For Display only
-% if imag(EigValues_mat(r,r))~=0 && mod(r,2)~=0
+% if imag(EigValues_vec(r))~=0 && mod(r,2)~=0
 %     disp('IRF Response parameters');
 %     r
 %     2*abs(A_r)

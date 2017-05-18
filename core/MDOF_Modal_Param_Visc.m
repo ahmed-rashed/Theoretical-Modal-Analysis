@@ -1,8 +1,6 @@
-function [w_r_col, zeta_r_col, w_d_r_col]=MDOF_Modal_Param_Visc(EigValues_mat)
+function [w_r_col, zeta_r_col, w_d_r_col]=MDOF_Modal_Param_Visc(EigValues_vec)
 
-N=size(EigValues_mat,1)/2;
-
-EigValues_vec=diag(EigValues_mat);
+N=length(EigValues_vec)/2;
 
 UnderDamped_2N_Ind_temp=find(imag(EigValues_vec)~=0);
 UnderDamped_2N_Ind=UnderDamped_2N_Ind_temp(1:2:end-1);
