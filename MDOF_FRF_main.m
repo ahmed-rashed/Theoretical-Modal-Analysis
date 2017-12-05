@@ -26,12 +26,12 @@ f_col=linspace(0,f_final,n_f).';
 w_col=2*pi*f_col;
 
 %% Slow FRF calculation
-[M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M, C, K, w), w_col, N, n_row, m_row);
-% [M,D,K]=N_DOF_sys(.5*m_vec,d_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Hyst(M, D, K, w), w_col, N, n_row, m_row);
+[M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M_mat, C_mat, K_mat, w), w_col, N, n_row, m_row);
+% [M_mat,D,K_mat]=N_DOF_sys(.5*m_vec,d_vec,k_vec);H_w_n_m_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Hyst(M_mat, D, K_mat, w), w_col, N, n_row, m_row);
 
 %% Fast FRF calculation
-[M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
-[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M, C, K);
+[M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);
+[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat);
 H_w_n_m_cols=MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_col, n_row, m_row,plot_SDOF_FRFs);
 
 for ii=1:length(n_row)
@@ -63,8 +63,8 @@ export_figure([3:14],'',filenames)
 
 %% Fast FRF calculation; Modal Superposition
 c_vec=8*ones(1,N+1)*10;
-[M,C,K]=N_DOF_sys(m_vec,c_vec,k_vec);
-[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M, C, K);
+[M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);
+[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat);
 MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_col, n_row, m_row,plot_SDOF_FRFs);
 export_figure([15:16],'==',{'MDOF-FRFMag_ModalSuperPos1';'FRF-Nyq_ModalSuperPos1'})
 

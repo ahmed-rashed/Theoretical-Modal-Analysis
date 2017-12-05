@@ -1,4 +1,4 @@
-function MDOF_Prob(M,C,K,x_0_col,x_dot_0_col,n_row,m_row,t_row,f_column, ...
+function MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,n_row,m_row,t_row,f_column, ...
 				   isProportional,maxPhaseLag,display_EVD_Details)	%Optional arguments
 
 if nargin<10
@@ -13,14 +13,14 @@ if nargin<12
     display_EVD_Details=false;
 end
 
-N=size(M,1);
+N=size(M_mat,1);
 n_points=length(t_row);
 n_f_points=length(f_column);
 n_RF_curves=length(n_row);
 
 w_column=2*pi*f_column;
 
-[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M, C, K,isProportional,display_EVD_Details);
+[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat,isProportional,display_EVD_Details);
 
 [w_r_vec, zeta_r_vec, w_d_r_vec]=MDOF_Modal_Param_Visc(EigValues_vec)
 
@@ -74,7 +74,7 @@ end
 x_new_ylabel_col=x_ylabel_col;
 
 %Free response
-x_rows=MDOF_Free_Response_Visc(M,C, EigValues_vec, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row);
+x_rows=MDOF_Free_Response_Visc(M_mat,C_mat, EigValues_vec, EigVectors_Normalized, x_0_col, x_dot_0_col, t_row);
 figure
 for n=1:N
     subplot(N,1,n)
@@ -99,7 +99,7 @@ x_rows1=zeros(N,n_points);
 x_rows2=zeros(N,n_points);
 f_rows_labels_col=cell(N,1);
 ignoreTransientVector=false;
-if all(all(abs(C)<=10000*eps))
+if all(all(abs(C_mat)<=10000*eps))
     ignoreTransientVector=[true,ignoreTransientVector];
 end
 for ignoreTransient=ignoreTransientVector
@@ -113,13 +113,13 @@ for ignoreTransient=ignoreTransientVector
     end
     figureTitle1=[x_new_ylabel_col{1},' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$'];
     figureTitle2=[x_new_ylabel_col{2},' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$'];
-    if  all(all(abs(C)<=10000*eps))
+    if  all(all(abs(C_mat)<=10000*eps))
         figureTitle1=[figureTitle1,' for undamped system'];
         figureTitle2=[figureTitle2,' for undamped system'];
     end
         
     for sameScale_y1=sameScale_y1_Vector
-        if  ignoreTransient && all(all(abs(C)<=10000*eps))
+        if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
             figureTitle1=[figureTitle1,' \underline{(never coincides with $',x_ylabel_col{1},'$, but matches $H_{1,1}(\omega)$)}'];
             figureTitle2=[figureTitle2,' \underline{(never coincides with $',x_ylabel_col{2},'$, but matches $H_{2,1}(\omega)$)}'];                
         end
@@ -161,13 +161,13 @@ for ignoreTransient=ignoreTransientVector
     end
     figureTitle1=[x_new_ylabel_col{1},' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$'];
     figureTitle2=[x_new_ylabel_col{2},' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$'];
-    if  all(all(abs(C)<=10000*eps))
+    if  all(all(abs(C_mat)<=10000*eps))
         figureTitle1=[figureTitle1,' for undamped system'];
         figureTitle2=[figureTitle2,' for undamped system'];
     end
     
     for sameScale_y1=sameScale_y1_Vector
-        if  ignoreTransient && all(all(abs(C)<=10000*eps))
+        if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
             figureTitle1=[figureTitle1,' \underline{(never coincides with $',x_ylabel_col{1},'$, but matches $H_{1,2}(\omega)$)}'];
             figureTitle2=[figureTitle2,' \underline{(never coincides with $',x_ylabel_col{2},'$, but matches $H_{2,2}(\omega)$)}'];                
         end

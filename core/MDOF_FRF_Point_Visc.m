@@ -1,3 +1,3 @@
-function Hn=MDOF_FRF_Point_Visc(M, C, K, w)
+function H_w_mat=MDOF_FRF_Point_Visc(M_mat, C_mat, K_mat, w)
 
-Hn=inv(-w^2*M+1i*w*C+K);
+H_w_mat=inv(-w^2*M_mat+1i*w*C_mat+K_mat);

@@ -1,3 +1,3 @@
-function Hn=MDOF_FRF_Point_Hyst(M, D, K, w)
+function H_w_mat=MDOF_FRF_Point_Hyst(M_mat, D_mat, K_mat, w)
 
-Hn=inv(K+1i*D-w^2*M);
+H_w_mat=inv(K_mat+1i*D_mat-w^2*M_mat);

@@ -10,7 +10,7 @@ n_f=size(w_column,1);
 H_ind_row=sub2ind([N,N],n_row,m_row);
 H_w_n_m_cols=zeros(n_f,i_col);
 for ii=1:n_f
-    Hn=MDOF_FRF_Point_func(w_column(ii));
+    H_w_mat=MDOF_FRF_Point_func(w_column(ii));
 
-    H_w_n_m_cols(ii,:)=Hn(H_ind_row);
+    H_w_n_m_cols(ii,:)=H_w_mat(H_ind_row);
 end
