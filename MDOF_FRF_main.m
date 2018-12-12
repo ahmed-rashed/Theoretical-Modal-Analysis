@@ -45,7 +45,7 @@ for ii=1:length(n_row)
     plot_FRF_r_i(f_col,H_w_n_m_cols(:,ii),ax_r,ax_i,'',H_subtitle);
     
     figure
-    plot_FRF_Nyq(H_w_n_m_cols(:,ii),H_subtitle);
+    plot_FRF_Nyq(H_w_n_m_cols(:,ii),[],H_subtitle);
 
     figure
     ax_mag=subplot(4,1,[1,2,3]);

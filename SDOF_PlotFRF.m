@@ -2,10 +2,10 @@ function SDOF_PlotFRF(r_vec,H_func,zeta_vec, ...
                   r_label,zeta_subtitle,H_subtitle,DispMagLines,r_peaks,H_mag_peaks,r_special,maxPhaseLag)   %Optional arguments
 
 if nargin<4
-    r_label='$r$';
+    r_label='$r\equiv\frac{\omega}{\omega_{\mathrm{n}}}$';
 else
     if isempty(r_label)
-        r_label='$r$';
+        r_label='$r\equiv\frac{\omega}{\omega_{\mathrm{n}}}$';
     end
 end
 
@@ -47,7 +47,7 @@ zeta_temp=min(zeta_vec(zeta_vec>0));
 H_temp_vec=H_func(r_vec,zeta_temp);
 
 Fig_Nyq=figure;
-plot_FRF_Nyq(H_temp_vec,H_subtitle);
+plot_FRF_Nyq(H_temp_vec);
 ax_Lims_Nyq=axis;clf;
 axis(ax_Lims_Nyq);hold on
 real_ticks=get(cla,'XTick');
@@ -108,7 +108,7 @@ for ii=1:length(zeta_vec)
     plot_FRF_r_i(r_vec,H_temp_vec,ax_r,ax_i,r_label,H_subtitle);
 
     figure(Fig_Nyq)
-    plot_FRF_Nyq(H_temp_vec,H_subtitle);
+    plot_FRF_Nyq(H_temp_vec,r_label,H_subtitle);
 
     plot_FRF_mag_phase(r_vec,H_vec,true,ax_mag1,ax_phase1,r_label,H_subtitle,DispMagLines,maxPhaseLag);
     plot_FRF_mag_phase(r_vec,H_vec,false,ax_mag2,ax_phase2,r_label,H_subtitle,DispMagLines,maxPhaseLag);

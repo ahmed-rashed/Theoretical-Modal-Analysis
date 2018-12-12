@@ -66,7 +66,7 @@ if plot_SDOF_FRFs
         plot_FRF_mag_phase(w_column/2/pi,H_w_n_m_cols(:,ii),false,ax_mag(ii),ax_phase(ii),'',['H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}'],0,maxPhaseLag,'k','LineWidth',1.5*get(h1,'LineWidth'));
 
         subplot(ax_Nyq(ii))
-        %plot_FRF_Nyq(H_w_n_m_cols(:,ii),['H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}'],0,'k','LineWidth',1.5*get(h3,'LineWidth'));
-        plot_FRF_Nyq(H_w_n_m_cols(:,ii),['H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}'],0,'k');
+        %plot_FRF_Nyq(H_w_n_m_cols(:,ii),[],['H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}'],0,'k','LineWidth',1.5*get(h3,'LineWidth'));
+        plot_FRF_Nyq(H_w_n_m_cols(:,ii),[],['H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}'],0,'k');
     end
 end

@@ -9,7 +9,7 @@ zeta_vec=[0,.1,.15,.2,.3,.5,1/sqrt(2),1,2];
 
 %% Viscous SDOF
     %Single curve
-    SDOF_PlotFRF(r_vec,SDOF_FRF_Visc_mul_k,0.15,'','',{'H_{u}','k'},30);
+    SDOF_PlotFRF(r_vec,@SDOF_FRF_Visc_mul_k,0.15,'','',{'H_{u}','k'},30);
     filenames={'SDOF_1_Visc_Hu-Nyq','SDOF_1_Visc_Hu-3D','SDOF_1_Visc_Hu-Real_Imag','SDOF_1_Visc_Hu-Mag_Phase','SDOF_1_Visc_Hu-Mag_Phase_SemiLog','SDOF_1_Visc_Hu-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
 
 
