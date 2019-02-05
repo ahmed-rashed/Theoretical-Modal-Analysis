@@ -22,7 +22,7 @@ B=inv(BB)
 C=[eye(N),zeros(N)]
 D=zeros(N,2*N)
 
-sys = ss(A,B,C,D);
+sys=ss(A,B,C,D);
 tf(sys)
 
 x_0_col=[-0.05;-0.08];

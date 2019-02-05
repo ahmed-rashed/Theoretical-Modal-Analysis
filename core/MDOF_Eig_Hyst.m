@@ -57,7 +57,7 @@ if displayDetails
 end
 
 %zeta_r_col=C_r_col/2./M_r_col./w_U_r_col;
-w_d_r_col=sqrt(w_U_r_col.^2-(C_r_col/2./M_r_col).^2);    %This is instead "w_U_r_mat.*sqrt(1-zeta_r_mat.^2)" to avoid the 0*inf in case w_U_r = 0
+w_d_r_col=sqrt(w_U_r_col.^2-(C_r_col/2./M_r_col).^2);    %This is instead "w_U_r_mat.*sqrt(1-zeta_r_mat.^2)" to avoid the 0*inf in case w_U_r=0
 
 EigValues_vec_temp1=-C_r_col/2./M_r_col-1i*w_d_r_col;
 EigValues_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %Eigenvalues not necessarily complex conjugate pairs
