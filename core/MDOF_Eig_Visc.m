@@ -10,9 +10,10 @@ end
 
 N=size(M_mat,1);
 if isPropotional || all(all(C_mat==0))    %Undamped or proportional
-    [EigVectors_U,EigValues_U_mat]=eig(-K_mat,M_mat);
+    [EigVectors_U,EigValues_U_mat]=eig(K_mat,M_mat);
     EigValues_U_vec=diag(EigValues_U_mat);
     
+    %This may be unnecessary
     %Sort eigenvalues and corresponding eignvectors
     [~,Index]=sort(abs(EigValues_U_vec));
     EigValues_U_vec=EigValues_U_vec(Index);
@@ -22,9 +23,9 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     EigValues_prec=eps*N*max(abs(EigValues_U_vec));
 
-    if any(EigValues_U_vec>=EigValues_prec)
+    if any(EigValues_U_vec<=-EigValues_prec)
         EigValues_U_vec
-        error('The matrix pencil (-K,M) must be negative semi definite. That is; eigenvalues must be <=0')
+        error('The matrix pencil (K,M) must be positive semi definite. That is; eigenvalues must be >=0')
     end
 
     EigValues_U_vec
@@ -49,7 +50,7 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     
     M_r_mat=EigVectors_U.'*M_mat*EigVectors_U;M_r_mat(abs(M_r_mat)<100*eps)=0;
     M_r_col=diag(M_r_mat);
-    w_U_r_col=sqrt(-EigValues_U_vec);
+    w_U_r_col=sqrt(EigValues_U_vec);
     C_r_mat=EigVectors_U.'*C_mat*EigVectors_U;C_r_mat(abs(C_r_mat)<100*eps)=0;
     C_r_col=diag(C_r_mat);
     
@@ -62,7 +63,7 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     w_d_r_col=sqrt(w_U_r_col.^2-(C_r_col/2./M_r_col).^2);    %This is instead "w_U_r_mat.*sqrt(1-zeta_r_mat.^2)" to avoid the 0*inf in case w_U_r=0
     
     EigValues_vec_temp1=-C_r_col/2./M_r_col-1i*w_d_r_col;
-    EigValues_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %Eigenvalues not necessarily complex conjugate pairs
+    EigValues_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %For overdamped proportional damping, Eigenvalues become real distinct
 
     EigValues_vec=zeros(2*N,1);
     EigValues_vec(1:2:2*N-1)=EigValues_vec_temp1;
