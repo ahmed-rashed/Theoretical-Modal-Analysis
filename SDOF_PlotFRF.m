@@ -137,6 +137,10 @@ if nargin>9
         xticks=get(ax_mag1,'XTick');
         set(ax_mag1,'XTick',sort(unique([xticks,r_special])));
         set(ax_phase1,'XTick',sort(unique([xticks,r_special])));
+        
+        xticks=get(ax_mag2,'XTick');
+        set(ax_mag2,'XTick',sort(unique([xticks,r_special])));
+        set(ax_phase2,'XTick',sort(unique([xticks,r_special])));
     end
 end
 
@@ -146,11 +150,12 @@ legend(legend_str,'interpreter','latex','Location','bestOutside')
 figure(Fig_Nyq)
 legend(legend_str,'interpreter','latex','Location','bestOutside')
 
-legend(ax_r,legend_str,'interpreter','latex','Location','NorthEast')
+legend(ax_r,legend_str,'interpreter','latex','Location','best')
+legend(ax_i,legend_str,'interpreter','latex','Location','best')
 
-legend(ax_mag1,legend_str,'interpreter','latex','Location','NorthEast')
-legend(ax_mag2,legend_str,'interpreter','latex','Location','NorthEast')
-legend(ax_mag3,legend_str,'interpreter','latex','Location','NorthWest')
+legend(ax_mag1,legend_str,'interpreter','latex','Location','best')
+legend(ax_mag2,legend_str,'interpreter','latex','Location','best')
+legend(ax_mag3,legend_str,'interpreter','latex','Location','best')
 
 set(groot,'DefaultAxesColorOrder','remove')
 set(groot,'DefaultAxesLineStyleOrder','remove')

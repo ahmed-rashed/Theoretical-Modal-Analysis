@@ -45,9 +45,9 @@ plot_FRF_Nyq(H_w_n_m_cols);
 legend(FRF_legend_str,'interpreter','latex')
 
 %Antiresonance and minimum FRF
-[w_H_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 1, 1,false)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_H_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 2, 1,false)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_H_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 2, 2,false)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 1, 1)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 2, 1)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w, 2, 2)), w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
 
 %IRF
 h_cols=MDOF_IRF_Visc(EigValues_vec, EigVectors_Normalized, t_row.', n_row, m_row);
@@ -93,7 +93,7 @@ end
 %Harmonic response 1
 F_0_col=zeros(N,1);
 F_0_col(1)=1;
-w_F1=[0.5,0.9,1,1.1,w_H_11_AR/w_r_vec(1),w_H_12_min/w_r_vec(1)]*w_r_vec(1);
+w_F1=[0.5,0.9,1,1.1,w_11_AR/w_r_vec(1),w_12_min/w_r_vec(1)]*w_r_vec(1);
 f_rows=zeros(N,n_points);
 x_rows1=zeros(N,n_points);
 x_rows2=zeros(N,n_points);
@@ -137,8 +137,8 @@ for ignoreTransient=ignoreTransientVector
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
-        f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,1}^{\mathrm{AR}}}$';
-        f_rows_labels_col{end}='$f_{1} (t),:\Omega_{1}=\omega_{H_{1,2}^{\min}}$';
+        f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{1,1}^{\mathrm{AR}}$';
+        f_rows_labels_col{end}='$f_{1} (t),:\Omega_{1}=\omega_{1,2}^{\min}$';
         figure
         plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure
@@ -149,7 +149,7 @@ end
 %Harmonic response 2
 F_0_col=zeros(N,1);
 F_0_col(2)=1;
-w_F2=[w_H_12_min/w_r_vec(2),w_H_22_AR/w_r_vec(2),0.95,1,1.05,1.5]*w_r_vec(2);
+w_F2=[w_12_min/w_r_vec(2),w_22_AR/w_r_vec(2),0.95,1,1.05,1.5]*w_r_vec(2);
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
         x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\mathrm{ss}}(');
@@ -181,8 +181,8 @@ for ignoreTransient=ignoreTransientVector
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
-        f_rows_labels_col{1}='$f_{2} (t),:\Omega_{2}=\omega_{H_{1,2}^{\min}}$';
-        f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{H_{2,2}^{\mathrm{AR}}}$';
+        f_rows_labels_col{1}='$f_{2} (t),:\Omega_{2}=\omega_{1,2}^{\min}$';
+        f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$';
         figure
         plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure

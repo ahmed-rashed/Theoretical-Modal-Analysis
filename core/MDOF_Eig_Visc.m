@@ -10,10 +10,8 @@ end
 
 N=size(M_mat,1);
 if isPropotional || all(all(C_mat==0))    %Undamped or proportional
-    [EigVectors_U,EigValues_U_mat]=eig(K_mat,M_mat);
-    EigValues_U_vec=diag(EigValues_U_mat);
+    [EigVectors_U,EigValues_U_vec]=eig(K_mat,M_mat,'chol','vector');
     
-    %This may be unnecessary
     %Sort eigenvalues and corresponding eignvectors
     [~,Index]=sort(abs(EigValues_U_vec));
     EigValues_U_vec=EigValues_U_vec(Index);
@@ -28,17 +26,25 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
         error('The matrix pencil (K,M) must be positive semi definite. That is; eigenvalues must be >=0')
     end
 
-    EigValues_U_vec
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %Only necesary for better display
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    for ii=1:N
-        EigVectors_U(:,ii)=EigVectors_U(:,ii)/EigVectors_U(1,ii);
+    if displayDetails
+        EigValues_U_vec
+
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %Only necesary for better display
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        for ii=1:N
+            EigVectors_U(:,ii)=EigVectors_U(:,ii)/EigVectors_U(1,ii);
+        end
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        EigVectors_U
     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    EigVectors_U
+    
     IndexTemp=find(abs(EigValues_U_vec)<=EigValues_prec);
     if ~isempty(IndexTemp)
+        if ~displayDetails
+            EigValues_U_vec
+            EigVectors_U
+        end
         warning('Calculated eigenvalues are inaccurate.')
         warning('Small eigenvalues and small elements in eigenvectors are manually reset to zero as follows:')
         disp('Press any key to continue');
@@ -68,10 +74,10 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     EigValues_vec=zeros(2*N,1);
     EigValues_vec(1:2:2*N-1)=EigValues_vec_temp1;
     EigValues_vec(2:2:2*N)=EigValues_vec_temp2;
-    
+
     EigVectors_Normalized=zeros(N,2*N);
-    EigVectors_Normalized(:,1:2:2*N-1)=EigVectors_U/sqrt(-i*2*diag(w_d_r_col).*M_r_mat);
-    EigVectors_Normalized(:,2:2:2*N)=EigVectors_U/sqrt(i*2*diag(w_d_r_col).*M_r_mat);      %w_d_r_col may be complex for over damped modes
+    EigVectors_Normalized(:,1:2:2*N-1)=EigVectors_U/sqrt(-1i*2*diag(w_d_r_col).*M_r_mat);
+    EigVectors_Normalized(:,2:2:2*N)  =EigVectors_U/sqrt( 1i*2*diag(w_d_r_col).*M_r_mat);      %w_d_r_col may be complex for over damped modes
 else    %Non-proportional
     [EigVectors_Normalized,EigValues_vec]=quad_eig(K_mat,C_mat,M_mat);
     
