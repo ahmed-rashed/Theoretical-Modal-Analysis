@@ -29,7 +29,7 @@ w_col=2*pi*f_col;
 
 %% Slow FRF calculation
 H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M_mat, C_mat, K_mat, w), w_col, N, n_row, m_row);
-%H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Hyst(M_mat, D, K_mat, w), w_col, N, n_row, m_row);
+%H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Struc(M_mat, D, K_mat, w), w_col, N, n_row, m_row);
 
 %% Fast FRF calculation
 [EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat);

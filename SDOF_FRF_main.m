@@ -60,11 +60,11 @@ filenames={'SDOF_Sensor_H_Vel-Nyq','SDOF_Sensor_H_Vel-3D','SDOF_Sensor_H_Vel-Rea
 SDOF_PlotFRF(r_vec,@(r_vec,zeta) fn_SDOF_sensor_FRF(r_vec,zeta)./-r_vec.^2,zeta_vec               ,'','',{'H_{\mathrm{Acc}}','\omega^{2}_{\mathrm{n}}'}   ,DispMagLines);
 filenames={'SDOF_Sensor_H_Acc-Nyq','SDOF_Sensor_H_Acc-3D','SDOF_Sensor_H_Acc-Real_Imag','SDOF_Sensor_H_Acc-Mag_Phase','SDOF_Sensor_H_Acc-Mag_Phase_SemiLog','SDOF_Sensor_H_Acc-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
     
-%% Hysteretic SDOF
+%% Structural SDOF
 close all;
-SDOF_PlotFRF(r_vec,@SDOF_FRF_Hyst_mul_k,zeta_vec,'','\eta',{'H_{u}','k'},DispMagLines);
-filenames={'SDOF_Hyst_Hu-Nyq','SDOF_Hyst_Hu-3D','SDOF_Hyst_Hu-Real_Imag','SDOF_Hyst_Hu-Mag_Phase','SDOF_Hyst_Hu-Mag_Phase_SemiLog','SDOF_Hyst_Hu-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
-SDOF_PlotFRF(r_vec,@(r_vec,eta) 1i*r_vec.*SDOF_FRF_Hyst_mul_k(r_vec,eta),zeta_vec,'','\eta',{'H_v','k/\omega_{\mathrm{n}}'});
-filenames={'SDOF_Hyst_Hv-Nyq','SDOF_Hyst_Hv-3D','SDOF_Hyst_Hv-Real_Imag','SDOF_Hyst_Hv-Mag_Phase','SDOF_Hyst_Hv-Mag_Phase_SemiLog','SDOF_Hyst_Hv-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
-SDOF_PlotFRF(r_vec,@(r_vec,eta) -r_vec.*r_vec.*SDOF_FRF_Hyst_mul_k(r_vec,eta),zeta_vec,'','\eta',{'H_a','k/\omega_{\mathrm{n}}^2'});
-filenames={'SDOF_Hyst_Ha-Nyq','SDOF_Hyst_Ha-3D','SDOF_Hyst_Ha-Real_Imag','SDOF_Hyst_Ha-Mag_Phase','SDOF_Hyst_Ha-Mag_Phase_SemiLog','SDOF_Hyst_Ha-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
+SDOF_PlotFRF(r_vec,@SDOF_FRF_Struc_mul_k,zeta_vec,'','\eta',{'H_{u}','k'},DispMagLines);
+filenames={'SDOF_Struc_Hu-Nyq','SDOF_Struc_Hu-3D','SDOF_Struc_Hu-Real_Imag','SDOF_Struc_Hu-Mag_Phase','SDOF_Struc_Hu-Mag_Phase_SemiLog','SDOF_Struc_Hu-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
+SDOF_PlotFRF(r_vec,@(r_vec,eta) 1i*r_vec.*SDOF_FRF_Struc_mul_k(r_vec,eta),zeta_vec,'','\eta',{'H_v','k/\omega_{\mathrm{n}}'});
+filenames={'SDOF_Struc_Hv-Nyq','SDOF_Struc_Hv-3D','SDOF_Struc_Hv-Real_Imag','SDOF_Struc_Hv-Mag_Phase','SDOF_Struc_Hv-Mag_Phase_SemiLog','SDOF_Struc_Hv-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
+SDOF_PlotFRF(r_vec,@(r_vec,eta) -r_vec.*r_vec.*SDOF_FRF_Struc_mul_k(r_vec,eta),zeta_vec,'','\eta',{'H_a','k/\omega_{\mathrm{n}}^2'});
+filenames={'SDOF_Struc_Ha-Nyq','SDOF_Struc_Ha-3D','SDOF_Struc_Ha-Real_Imag','SDOF_Struc_Ha-Mag_Phase','SDOF_Struc_Ha-Mag_Phase_SemiLog','SDOF_Struc_Ha-Mag_Phase_LogLog'};export_figure(max(double(get(groot,'Children')))+[-5:0],'',filenames);
