@@ -40,15 +40,15 @@ n_points=1000;
 t_row=linspace(0,t_final,n_points);
 w_0_vec=[0.1,0.4,0.6,3,5]*w_n;
 
-Y_base=1;
+Y0=1;
 sameScale_y1=false;
 zeta_vec=[0,0.1,1/sqrt(2)];
 N_zeta=length(zeta_vec);
 filenames=cell(2*N_zeta,1);
-Disp_base_func=@(t_row,w_0) Y_base*sin(w_0*t_row);
-Acc_base_func=@(t_row,w_0) -w_0^2*Y_base*sin(w_0*t_row);
+Disp_base_func=@(t_row,w_0) Y0*sin(w_0*t_row);
+Acc_base_func=@(t_row,w_0) -w_0^2*Y0*sin(w_0*t_row);
 for n=1:N_zeta
-    q_func=@(t_row,w_0) w_0^2*SDOF_Harmonic_Response_Visc_mul_m(Y_base, w_0, w_n, zeta_vec(n), t_row)/m;
+    q_func=@(t_row,w_0) SDOF_Harmonic_Response_Visc_mul_m(w_0^2*Y0, w_0, w_n, zeta_vec(n), t_row);
 
     %Vibrometer response
     figure
@@ -65,15 +65,15 @@ export_figure(max(double(get(groot, 'Children')))+[-2*N_zeta:-1]+1,'||',filename
 %% Moving vehicle
 w_0_vec=[0.5,0.9,1,1.1,sqrt(2),2.5]*w_n;
 
-Y_road=1;
+Y0=1;
 sameScale_y1=true;
 zeta_vec=[0,0.1,1/sqrt(2)];
 N_zeta=length(zeta_vec);
 filenames=cell(N_zeta,1);
-y_road_func=@(t_row,w_0) Y_road*sin(w_0*t_row);
+y_road_func=@(t_row,w_0) Y0*sin(w_0*t_row);
 for n=1:N_zeta
-    y_func=@(t_row,w_0) 2*Y_road*zeta_vec(n)*w_n*SDOF_Harmonic_Response_dot_Visc_mul_m(Y_road, w_0, w_n, zeta_vec(n), t_row)/m ...
-                          + Y_road*w_n^2*SDOF_Harmonic_Response_Visc_mul_m(Y_road, w_0, w_n, zeta_vec(n), t_row)/m;
+    y_func=@(t_row,w_0) SDOF_Harmonic_Response_dot_Visc_mul_m(2*Y0*zeta_vec(n)*w_n, w_0, w_n, zeta_vec(n), t_row) ...
+                          + SDOF_Harmonic_Response_Visc_mul_m(Y0*w_n^2, w_0, w_n, zeta_vec(n), t_row);
 
     figure
     SDOF_Plot_Harmonic_Response(t_row,y_func,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{Road}}(t)=\sin(\omega_{0}t)','y_{\mathrm{Road}}(t)','y(t)',sameScale_y1);
