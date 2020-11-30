@@ -1,4 +1,4 @@
-function MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,n_row,m_row,t_row,f_column,...
+function MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,...
 				   isProportional,maxPhaseLag,display_EVD_Details)	%Optional arguments
 
 if nargin<10
@@ -16,7 +16,7 @@ end
 N=size(M_mat,1);
 n_points=length(t_row);
 n_f_points=length(f_column);
-n_RF_curves=length(n_row);
+n_RF_curves=length(m_row);
 
 w_column=2*pi*f_column;
 
@@ -31,12 +31,12 @@ H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized);
 h_cols_Y_label_col=cell(n_RF_curves,1);
 FRF_legend_str=cell(n_RF_curves,1);
 for ii=1:n_RF_curves
-    h_cols_Y_label_col(ii)={['$h_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}(t)$']};
-    FRF_legend_str(ii)={['$H_{',int2str(n_row(ii)),',',int2str(m_row(ii)),'}(f)$']};
+    h_cols_Y_label_col(ii)={['$h_{',int2str(m_row(ii)),',',int2str(n_row(ii)),'}(t)$']};
+    FRF_legend_str(ii)={['$H_{',int2str(m_row(ii)),',',int2str(n_row(ii)),'}(f)$']};
 end
 
 %FRF
-H_w_n_m_cols=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_column,n_row,m_row);
+H_w_n_m_cols=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_column,m_row,n_row);
 figure
 ax_mag=plot_FRF_mag_phase(f_column,H_w_n_m_cols,false,[],[],[],[],[],maxPhaseLag);
 legend(ax_mag,FRF_legend_str,'interpreter','latex')
@@ -50,7 +50,7 @@ legend(FRF_legend_str,'interpreter','latex')
 [w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w,2,2)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
 
 %IRF
-h_cols=MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_row.',n_row,m_row);
+h_cols=MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_row.',m_row,n_row);
 figure
 for n=1:n_RF_curves
     subplot(n_RF_curves,1,n)

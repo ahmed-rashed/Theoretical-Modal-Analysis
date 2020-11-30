@@ -1,12 +1,12 @@
 function h_cols= ...
-MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_column,n_row,m_row)
+MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_column,m_row,n_row)
 
 N=size(EigVectors_Normalized,1);
 n=size(t_column,1);
-n_col=size(n_row,2);
+n_col=size(m_row,2);
 
 h_cols=zeros(n,n_col);
-A_ind_row=sub2ind([N,N],n_row,m_row);
+A_ind_row=sub2ind([N,N],m_row,n_row);
 
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
