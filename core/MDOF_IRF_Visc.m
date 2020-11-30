@@ -1,5 +1,5 @@
 function h_cols= ...
-MDOF_IRF_Visc(EigValues_vec, EigVectors_Normalized, t_column, n_row, m_row)
+MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_column,n_row,m_row)
 
 N=size(EigVectors_Normalized,1);
 n=size(t_column,1);

@@ -1,4 +1,4 @@
-function h_vec=SDOF_Vehicle_Step_Response(Y_0,w_n, zeta, t_vec)
+function h_vec=SDOF_Vehicle_Step_Response(Y_0,w_n,zeta,t_vec)
 
 if zeta==1
     h_vec=1+exp(-w_n*t_vec).*(w_n*t_vec-1);

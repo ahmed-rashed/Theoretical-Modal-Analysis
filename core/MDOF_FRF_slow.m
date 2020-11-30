@@ -1,4 +1,4 @@
-function H_cols=MDOF_FRF_slow(MDOF_FRF_Point_func, w_column, N, n_row, m_row)
+function H_cols=MDOF_FRF_slow(MDOF_FRF_Point_func,w_column,N,n_row,m_row)
 
 if any(size(n_row)~=size(m_row));error('Dimensions of n_row and m_row must be identical');end
 N_cols=size(n_row,2);

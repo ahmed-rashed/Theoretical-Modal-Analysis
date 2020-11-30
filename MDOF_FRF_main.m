@@ -28,12 +28,12 @@ w_col=2*pi*f_col;
 [M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);
 
 %% Slow FRF calculation
-H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M_mat, C_mat, K_mat, w), w_col, N, n_row, m_row);
-%H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Struc(M_mat, D, K_mat, w), w_col, N, n_row, m_row);
+H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Visc(M_mat,C_mat,K_mat,w),w_col,N,n_row,m_row);
+%H_cols=MDOF_FRF_slow(@(w)MDOF_FRF_Point_Struc(M_mat,D,K_mat,w),w_col,N,n_row,m_row);
 
 %% Fast FRF calculation
-[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat);
-[H_cols2,H_cols_SDOF]=MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_col, n_row, m_row);
+[EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat);
+[H_cols2,H_cols_SDOF]=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_col,n_row,m_row);
 
 if any(abs(H_cols-H_cols2)>100*eps)
     error('Spatial and Modal FRF''s should be the same!')
@@ -67,11 +67,11 @@ export_figure((1:12),'',filenames)
 MDOF_FRF_ModalSuperposition(f_col,H_cols_SDOF,n_row,m_row);
 export_figure((13:14),'==',{'MDOF-FRFMag_ModalSuperPos';'FRF-Nyq_ModalSuperPos'})
 
-%% Fast FRF calculation; Modal Superposition, additional highly damped figure
+%% Fast FRF calculation; Modal Superposition,additional highly damped figure
 c_vec=80*ones(1,N+1);
 [M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);
-[EigVectors_Normalized, EigValues_vec]=MDOF_Eig_Visc(M_mat, C_mat, K_mat);
-[~,H_cols_SDOF]=MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_col, n_row, m_row);
+[EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat);
+[~,H_cols_SDOF]=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_col,n_row,m_row);
 MDOF_FRF_ModalSuperposition(f_col,H_cols_SDOF,n_row,m_row);
 export_figure((15:16),'==',{'MDOF-FRFMag_ModalSuperPos1';'FRF-Nyq_ModalSuperPos1'})
 

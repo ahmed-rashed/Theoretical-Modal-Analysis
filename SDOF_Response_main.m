@@ -11,8 +11,8 @@ t_vec=linspace(0,2*T_n,500);
 zeta_vec=[0,.1,.2,.4,1/sqrt(2),1,2];
 
 %% Free response of viscous SDOF
-plot_response(t_vec,@(t_vec,zeta)SDOF_Free_Response_Visc(w_n, zeta, x0, x_dot_0, t_vec),zeta_vec,'$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}$','','',1/T_n,[],'southeast');
-title(['$x(t)$ for $\omega_{n}=',num2str(w_n),'$, $x_{0}=',num2str(x0),'$ and $\dot{x}_{0}=',num2str(x_dot_0),'$'],'interpreter','latex');
+plot_response(t_vec,@(t_vec,zeta)SDOF_Free_Response_Visc(w_n,zeta,x0,x_dot_0,t_vec),zeta_vec,'$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}$','','',1/T_n,[],'southeast');
+title(['$x(t)$ for $\omega_{n}=',num2str(w_n),'$,$x_{0}=',num2str(x0),'$ and $\dot{x}_{0}=',num2str(x_dot_0),'$'],'interpreter','latex');
 grid on
 
 export_figure(gcf,'',{'SDOF_FreeResponse'})

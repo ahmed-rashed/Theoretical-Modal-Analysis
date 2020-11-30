@@ -1,4 +1,4 @@
-function h_vec=SDOF_Vehicle_IRF(w_n, zeta, t_vec)
+function h_vec=SDOF_Vehicle_IRF(w_n,zeta,t_vec)
 
 if zeta==1
     h_vec=w_n*exp(-w_n*t_vec).*(2-w_n*t_vec);

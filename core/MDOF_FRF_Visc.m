@@ -1,4 +1,4 @@
-function [H_cols,H_cols_SDOF_layers]=MDOF_FRF_Visc(EigValues_vec, EigVectors_Normalized, w_col, n_row, m_row)
+function [H_cols,H_cols_SDOF_layers]=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_col,n_row,m_row)
 
 [N,Q]=size(EigVectors_Normalized);
 if Q~=2*N,error('EigVectors_Normalized should be N x 2N matrix.'),end

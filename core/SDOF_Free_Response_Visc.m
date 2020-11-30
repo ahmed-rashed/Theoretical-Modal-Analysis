@@ -1,4 +1,4 @@
-function x_vec=SDOF_Free_Response_Visc(w_n, zeta, x0, x_dot_0, t_vec)
+function x_vec=SDOF_Free_Response_Visc(w_n,zeta,x0,x_dot_0,t_vec)
 
 if zeta~=1
     w_d=w_n*sqrt(1-zeta^2);

@@ -1,4 +1,4 @@
-function H_s_mat=MDOF_TF_Visc(EigValues_vec, EigVectors_Normalized)
+function H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized)
 
 N=size(EigVectors_Normalized,1);
 

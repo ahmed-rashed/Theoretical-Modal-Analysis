@@ -1,4 +1,4 @@
-function [w_r_col, zeta_r_col, w_d_r_col]=MDOF_Modal_Param_Visc(EigValues_vec)
+function [w_r_col,zeta_r_col,w_d_r_col]=MDOF_Modal_Param_Visc(EigValues_vec)
 
 N=length(EigValues_vec)/2;
 

@@ -1,5 +1,5 @@
 function [y_vec,t_vec]=forcedResponse(h_vec,x_vec,Delta_t,bRaw)
-% If length(h_vec) is less than length(x_vec), h_vec is padded with zeros
+% If length(h_vec) is less than length(x_vec),h_vec is padded with zeros
 
 if nargin<3
     Delta_t=1;

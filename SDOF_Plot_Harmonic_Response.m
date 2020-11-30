@@ -1,4 +1,4 @@
-function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,HarmonicExcitation_title,f_label,x_label_rows,sameScale_y1, ...
+function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,HarmonicExcitation_title,f_label,x_label_rows,sameScale_y1,...
 								     ignoreTransient)    %Optional arguments
                               
 set(groot,'DefaultLineLineWidth',1);
@@ -26,7 +26,7 @@ end
 
 figureTitle=['$',x_new_label_rows,'$ due to $',HarmonicExcitation_title,'$ for ',zeta_expr];
 if ignoreTransient && zeta==0
-    figureTitle=[figureTitle,' \underline{(never coincides with $',x_label_rows,'$, but matches $H(\omega)$)}'];
+    figureTitle=[figureTitle,' \underline{(never coincides with $',x_label_rows,'$,but matches $H(\omega)$)}'];
 end
 
 f_rows_labels_col=cell(length(ii_row),1);

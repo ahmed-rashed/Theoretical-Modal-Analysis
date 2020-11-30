@@ -28,7 +28,7 @@ set(gca,'XTickLabel',[]);
 y_road_vec=zeros(1,K);T_2=.5*T_n;y_road_vec(t_vec<=T_2)=1;y_func=@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2);
 % y_road_vec=zeros(1,K);y_road_vec(1)=1;y_func=@(t_vec,zeta)SDOF_Vehicle_IRF(w_n,zeta,t_vec);
 % y_road_vec=ones(1,K);y_func=@(t_vec,zeta)SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec);
-% w_0=.9*w_n;Y0=rand;y_road_vec=Y0*sin(w_0*t_vec);y_func=@(t_vec,zeta)SDOF_Harmonic_Response_dot_Visc_mul_m(2*Y0*zeta*w_n, w_0, w_n, zeta, t_vec)+SDOF_Harmonic_Response_Visc_mul_m(Y0*w_n^2, w_0, w_n, zeta, t_vec);
+% w_0=.9*w_n;Y0=rand;y_road_vec=Y0*sin(w_0*t_vec);y_func=@(t_vec,zeta)SDOF_Harmonic_Response_dot_Visc_mul_m(2*Y0*zeta*w_n,w_0,w_n,zeta,t_vec)+SDOF_Harmonic_Response_Visc_mul_m(Y0*w_n^2,w_0,w_n,zeta,t_vec);
 
 subplot(3,1,2)
 plot(t_vec/T_n,y_road_vec,'.-');
