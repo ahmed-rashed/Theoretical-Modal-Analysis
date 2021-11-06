@@ -10,7 +10,7 @@ v_1=M*x_0_col;
 v_3=C*x_0_col+M*x_dot_0_col;
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';
-    x_rows=x_rows+EigValues_vec(r)*A_r*v_1*exp(EigValues_vec(r)*t_row)+A_r*v_3*exp(EigValues_vec(r)*t_row);
+    x_rows=x_rows+A_r*(EigValues_vec(r)*v_1*exp(EigValues_vec(r)*t_row)+v_3*exp(EigValues_vec(r)*t_row));
     
     %For Display only
     w_d_r=abs(imag(EigValues_vec(r)));
@@ -23,4 +23,5 @@ for r=1:2*N
     end
 end
 
-x_rows(imag(x_rows)<100*eps)=real(x_rows(imag(x_rows)<100*eps));
+mask=imag(x_rows)<100*eps;
+x_rows(mask)=real(x_rows(mask));

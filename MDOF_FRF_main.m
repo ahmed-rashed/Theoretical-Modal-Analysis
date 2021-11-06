@@ -58,22 +58,22 @@ for ii=1:length(m_row)
     plot_FRF_mag_phase(f_col,H_cols(:,ii),islin,ax_mag,ax_phase,'',H_subtitle);
 end
 
-filenames={'FRF-3D-1';'FRF-RealImag-1';'FRF-Nyq-1';'MDOF-FRFMag1'
-           'FRF-3D-2';'FRF-RealImag-2';'FRF-Nyq-2';'MDOF-FRFMag2'
-           'FRF-3D-3';'FRF-RealImag-3';'FRF-Nyq-3';'MDOF-FRFMag3'};
+filenames=["FRF-3D-1";"FRF-RealImag-1";"FRF-Nyq-1";"MDOF-FRFMag1"
+           "FRF-3D-2";"FRF-RealImag-2";"FRF-Nyq-2";"MDOF-FRFMag2"
+           "FRF-3D-3";"FRF-RealImag-3";"FRF-Nyq-3";"MDOF-FRFMag3"];
 export_figure((1:12),'',filenames)
 
 %% Plot modal super position
 MDOF_FRF_ModalSuperposition(f_col,H_cols_SDOF,m_row,n_row);
-export_figure((13:14),'==',{'MDOF-FRFMag_ModalSuperPos';'FRF-Nyq_ModalSuperPos'})
+export_figure((13:14),'==',["MDOF-FRFMag_ModalSuperPos";"FRF-Nyq_ModalSuperPos"])
 
-%% Fast FRF calculation; Modal Superposition,additional highly damped figure
+%% Fast FRF calculation; Modal Superposition, additional highly damped figure
 c_vec=80*ones(1,N+1);
 [M_mat,C_mat,K_mat]=N_DOF_sys(m_vec,c_vec,k_vec);
 [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat);
 [~,H_cols_SDOF]=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_col,m_row,n_row);
 MDOF_FRF_ModalSuperposition(f_col,H_cols_SDOF,m_row,n_row);
-export_figure((15:16),'==',{'MDOF-FRFMag_ModalSuperPos1';'FRF-Nyq_ModalSuperPos1'})
+export_figure((15:16),'==',["MDOF-FRFMag_ModalSuperPos1";"FRF-Nyq_ModalSuperPos1"])
 
 set(groot,'DefaultAxesColorOrder','remove')
 set(groot,'DefaultLineMarkerSize','remove');

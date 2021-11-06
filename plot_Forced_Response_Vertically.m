@@ -9,7 +9,7 @@ if nargin<7
     sameScale_y1=false;
 end
 if sameScale_y1
-    axisTitle_latex=[axisTitle_latex,'; (same $',x_rows_Latex_sym_col,'$ limits)'];
+    axisTitle_latex=axisTitle_latex+'; (same $'+x_rows_Latex_sym_col+'$ limits)';
 end
 
 N_signals=size(x_rows,1);
@@ -73,7 +73,7 @@ for n=1:N_signals
     end
     
     if ~isempty(x_rows_Latex_sym_col)
-        ylabel(['$',x_rows_Latex_sym_col,'$'],'interpreter','latex')
+        ylabel("$"+x_rows_Latex_sym_col+"$",'interpreter','latex')
     end
     
     axis(AX1(n),'tight');

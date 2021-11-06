@@ -1,5 +1,5 @@
 function x_mul_m_dot_vec=SDOF_Harmonic_Response_dot_Visc_mul_m ...
-						 (F0,w_0,w_n,zeta,t_vec,...
+						 (F0,w_0,w_n,zeta,t_vec, ...
                                               ignoreTransient)    %Optional arguments
 
 if nargin<6
@@ -7,12 +7,15 @@ if nargin<6
 end
 
 r_0=w_0/w_n;
-w_d=w_n*sqrt(1-zeta^2);
+
 if (zeta ==0) && (r_0==1) && ~ignoreTransient
-    x_mul_m_dot_vec=F0*w_0*t_vec/(w_0+w_n).*sin((w_0+w_n)*t_vec/2);
+    x_mul_m_dot_vec=F0/2*t_vec.*sin(w_n*t_vec);
 else
-    x_mul_m_dot_vec=F0*r_0/w_n*((1-r_0^2)*cos(w_0*t_vec)+2*zeta*r_0*sin(w_0*t_vec))/((1-r_0^2)^2+(2*zeta*r_0)^2);
+    x_mul_m_dot_vec=(1-r_0^2)*cos(w_0*t_vec)+2*zeta*r_0*sin(w_0*t_vec);
     if ~ignoreTransient
-        x_mul_m_dot_vec=x_mul_m_dot_vec-F0*r_0/w_n*exp(-zeta*w_n*t_vec).*((1-r_0^2)*cos(w_d*t_vec)+zeta*w_n*(r_0^2+1)*sin(w_d*t_vec)/w_d)/((1-r_0^2)^2+(2*zeta*r_0)^2);
+        w_d=w_n*sqrt(1-zeta^2);
+        x_mul_m_dot_vec=x_mul_m_dot_vec-exp(-zeta*w_n*t_vec).*((1-r_0^2)*cos(w_d*t_vec)+zeta*w_n*(r_0^2+1)*sin(w_d*t_vec)/w_d);
     end
+
+    x_mul_m_dot_vec=F0*r_0/w_n/((1-r_0^2)^2+(2*zeta*r_0)^2)*x_mul_m_dot_vec;
 end

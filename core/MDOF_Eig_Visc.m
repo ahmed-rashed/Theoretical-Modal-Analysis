@@ -1,4 +1,4 @@
-function [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,...
+function [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat, ...
 				 isPropotional,displayDetails)     %Optional arguments
 if nargin<4
     isPropotional=false;
@@ -69,7 +69,7 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     w_d_r_col=sqrt(w_U_r_col.^2-(C_r_col/2./M_r_col).^2);    %This is instead "w_U_r_mat.*sqrt(1-zeta_r_mat.^2)" to avoid the 0*inf in case w_U_r=0
     
     EigValues_vec_temp1=-C_r_col/2./M_r_col-1i*w_d_r_col;
-    EigValues_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %For overdamped proportional damping,Eigenvalues become real distinct
+    EigValues_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %For overdamped proportional damping, Eigenvalues become real distinct
 
     EigValues_vec=zeros(2*N,1);
     EigValues_vec(1:2:2*N-1)=EigValues_vec_temp1;

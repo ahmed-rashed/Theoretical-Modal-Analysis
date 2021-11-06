@@ -31,15 +31,15 @@ n_row=[1,1,2];
 
 %% Undamped system
 C_mat=zeros(N,N),t_final=10;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,true)
-filenames=[{'MDOF-Undamped_FRF'};{'MDOF-Undamped_FRF-Nyquist'};{'MDOF-Undamped_IRF'};{'MDOF-Undamped_free_response'};
-    {'MDOF-Undamped_Harmonic_response_f1_x1_no_transient'};{'MDOF-Undamped_Harmonic_response_f1_x2_no_transient'};
-    {'MDOF-Undamped_Harmonic_response_f1_x1'};{'MDOF-Undamped_Harmonic_response_f1_x2'};
-    {'MDOF-Undamped_Harmonic_response_f1_x1-sameY'};{'MDOF-Undamped_Harmonic_response_f1_x2-sameY'};
-    {'MDOF-Undamped_Harmonic_response_f2_x1_no_transient'};{'MDOF-Undamped_Harmonic_response_f2_x2_no_transient'};    
-    {'MDOF-Undamped_Harmonic_response_f2_x1'};{'MDOF-Undamped_Harmonic_response_f2_x2'};
-    {'MDOF-Undamped_Harmonic_response_f2_x1-sameY'};{'MDOF-Undamped_Harmonic_response_f2_x2-sameY'}];
-export_figure([2:4],'',filenames(2:4))
-export_figure([5:length(filenames)],'||',filenames(5:end))
+filenames=["MDOF-Undamped_FRF";"MDOF-Undamped_FRF-Nyquist";"MDOF-Undamped_IRF";"MDOF-Undamped_free_response";
+    "MDOF-Undamped_Harmonic_response_f1_x1_no_transient";"MDOF-Undamped_Harmonic_response_f1_x2_no_transient";
+    "MDOF-Undamped_Harmonic_response_f1_x1";"MDOF-Undamped_Harmonic_response_f1_x2";
+    "MDOF-Undamped_Harmonic_response_f1_x1-sameY";"MDOF-Undamped_Harmonic_response_f1_x2-sameY";
+    "MDOF-Undamped_Harmonic_response_f2_x1_no_transient";"MDOF-Undamped_Harmonic_response_f2_x2_no_transient";    
+    "MDOF-Undamped_Harmonic_response_f2_x1";"MDOF-Undamped_Harmonic_response_f2_x2";
+    "MDOF-Undamped_Harmonic_response_f2_x1-sameY";"MDOF-Undamped_Harmonic_response_f2_x2-sameY"];
+export_figure(2:4,'',filenames(2:4))
+export_figure(5:length(filenames),'||',filenames(5:end))
 close all
 
 %To obtain correct phase of undamped FRF
@@ -51,25 +51,25 @@ close all
 %C_mat=3/4*M_mat+K_mat/300,t_final=6;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,true)
 %C_mat=2/3*M_mat+K_mat/300,t_final=6;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,true)
 C_mat=2/15*M_mat+K_mat/1500,t_final=20;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,true)
-filenames=[{'MDOF-Proportional_FRF'};{'MDOF-Proportional_FRF-Nyquist'};{'MDOF-Proportional_IRF'};{'MDOF-Proportional_free_response'};
-    {'MDOF-Proportional_Harmonic_response_f1_x1'};{'MDOF-Proportional_Harmonic_response_f1_x2'};
-    {'MDOF-Proportional_Harmonic_response_f1_x1-sameY'};{'MDOF-Proportional_Harmonic_response_f1_x2-sameY'};
-    {'MDOF-Proportional_Harmonic_response_f2_x1'};{'MDOF-Proportional_Harmonic_response_f2_x2'};
-    {'MDOF-Proportional_Harmonic_response_f2_x1-sameY'};{'MDOF-Proportional_Harmonic_response_f2_x2-sameY'}];
-export_figure([1:4],'',filenames(1:4))
-export_figure([5:length(filenames)],'||',filenames(5:end))
+filenames=["MDOF-Proportional_FRF";"MDOF-Proportional_FRF-Nyquist";"MDOF-Proportional_IRF";"MDOF-Proportional_free_response";
+    "MDOF-Proportional_Harmonic_response_f1_x1";"MDOF-Proportional_Harmonic_response_f1_x2";
+    "MDOF-Proportional_Harmonic_response_f1_x1-sameY";"MDOF-Proportional_Harmonic_response_f1_x2-sameY";
+    "MDOF-Proportional_Harmonic_response_f2_x1";"MDOF-Proportional_Harmonic_response_f2_x2";
+    "MDOF-Proportional_Harmonic_response_f2_x1-sameY";"MDOF-Proportional_Harmonic_response_f2_x2-sameY"];
+export_figure(1:4,'',filenames(1:4))
+export_figure(5:length(filenames),'||',filenames(5:end))
 close all
 
 %% Generally viscously damped system
 C_mat=[0.8,-0.1;-0.1,0.3],t_final=15;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,false)
 %C_mat=C_temp,t_final=15;t_row=linspace(0,t_final,n_points);MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,false)
-filenames=[{'MDOF-Viscous_FRF'};{'MDOF-Viscous_FRF-Nyquist'};{'MDOF-Viscous_IRF'};{'MDOF-Viscous_free_response'};
-    {'MDOF-Viscous_Harmonic_response_f1_x1'};{'MDOF-Viscous_Harmonic_response_f1_x2'};
-    {'MDOF-Viscous_Harmonic_response_f1_x1-sameY'};{'MDOF-Viscous_Harmonic_response_f1_x2-sameY'};
-    {'MDOF-Viscous_Harmonic_response_f2_x1'};{'MDOF-Viscous_Harmonic_response_f2_x2'};
-    {'MDOF-Viscous_Harmonic_response_f2_x1-sameY'};{'MDOF-Viscous_Harmonic_response_f2_x2-sameY'}];
-export_figure([1:4],'',filenames(1:4))
-export_figure([5:length(filenames)],'||',filenames(5:end))
+filenames=["MDOF-Viscous_FRF";"MDOF-Viscous_FRF-Nyquist";"MDOF-Viscous_IRF";"MDOF-Viscous_free_response";
+    "MDOF-Viscous_Harmonic_response_f1_x1";"MDOF-Viscous_Harmonic_response_f1_x2";
+    "MDOF-Viscous_Harmonic_response_f1_x1-sameY";"MDOF-Viscous_Harmonic_response_f1_x2-sameY";
+    "MDOF-Viscous_Harmonic_response_f2_x1";"MDOF-Viscous_Harmonic_response_f2_x2";
+    "MDOF-Viscous_Harmonic_response_f2_x1-sameY";"MDOF-Viscous_Harmonic_response_f2_x2-sameY"];
+export_figure(1:4,'',filenames(1:4))
+export_figure(5:length(filenames),'||',filenames(5:end))
 close all
 
 %% 

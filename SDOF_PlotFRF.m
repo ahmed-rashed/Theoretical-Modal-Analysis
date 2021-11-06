@@ -1,4 +1,4 @@
-function SDOF_PlotFRF(r_vec,H_func,zeta_vec,...
+function SDOF_PlotFRF(r_vec,H_func,zeta_vec, ...
                   r_label,zeta_subtitle,H_subtitle,DispMagLines,r_peaks,H_mag_peaks,r_special,maxPhaseLag)   %Optional arguments
 
 if nargin<4
@@ -90,7 +90,7 @@ Fig_Bode3=figure;
 ax_mag3=subplot(4,1,[1:3]);hold on
 ax_phase3=subplot(4,1,4);hold on
 
-legend_str=cell(length(zeta_vec),1);
+legend_str=strings(length(zeta_vec),1);
 for ii=1:length(zeta_vec)
     H_vec=H_func(r_vec,zeta_vec(ii));
 
@@ -115,13 +115,13 @@ for ii=1:length(zeta_vec)
     plot_FRF_mag_phase(r_vec,H_vec,[false,false],ax_mag3,ax_phase3,r_label,H_subtitle,DispMagLines,maxPhaseLag);
     
     if zeta_vec(ii)==0
-        legend_str(ii)=cellstr(['$',zeta_subtitle,'=0;\;\mathrm{misleading}$']);
+        legend_str(ii)="$"+zeta_subtitle+'=0;\;\mathrm{misleading}$';
     elseif zeta_vec(ii)==1/sqrt(2)
-        legend_str(ii)=cellstr(['$',zeta_subtitle,'=1/\sqrt{2}$']);
+        legend_str(ii)="$"+zeta_subtitle+'=1/\sqrt{2}$';
     elseif zeta_vec(ii)==sqrt(2)
-        legend_str(ii)=cellstr(['$',zeta_subtitle,'=\sqrt{2}$']);
+        legend_str(ii)="$"+zeta_subtitle+'=\sqrt{2}$';
     else
-        legend_str(ii)=cellstr(['$',zeta_subtitle,'=',num2str(zeta_vec(ii)),'$']);
+        legend_str(ii)="$"+zeta_subtitle+'='+zeta_vec(ii)+'$';
     end
 end
 

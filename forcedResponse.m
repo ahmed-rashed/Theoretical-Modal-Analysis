@@ -1,5 +1,6 @@
-function [y_vec,t_vec]=forcedResponse(h_vec,x_vec,Delta_t,bRaw)
-% If length(h_vec) is less than length(x_vec),h_vec is padded with zeros
+function [y_vec,t_vec]=forcedResponse(h_vec,x_vec, ...
+                                        Delta_t,bRaw)
+% If length(h_vec) is less than length(x_vec), h_vec is padded with zeros
 
 if nargin<3
     Delta_t=1;
@@ -17,14 +18,13 @@ else
     end
 end
 
-y_vec_temp=conv(h_vec,x_vec);
-
 if bRaw
-    y_vec=y_vec_temp;
+    y_vec=conv(h_vec,x_vec);
     K=length(y_vec);
 else
     K=length(x_vec);
-    y_vec=y_vec_temp(1:K);
+    y_vec_temp=conv(h_vec,x_vec);y_vec=y_vec_temp(1:K);
+%     y_vec=filter(h_vec,1,x_vec);  %This is equivalent to the above line
 end
 
 if sum(x_vec~=0)>1

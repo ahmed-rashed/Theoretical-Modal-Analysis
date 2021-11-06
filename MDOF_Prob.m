@@ -28,11 +28,11 @@ w_column=2*pi*f_column;
 H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized);
 
 %FRF & IRF labels
-h_cols_Y_label_col=cell(n_RF_curves,1);
-FRF_legend_str=cell(n_RF_curves,1);
+h_cols_Y_label_col=strings(n_RF_curves,1);
+FRF_legend_str=strings(n_RF_curves,1);
 for ii=1:n_RF_curves
-    h_cols_Y_label_col(ii)={['$h_{',int2str(m_row(ii)),',',int2str(n_row(ii)),'}(t)$']};
-    FRF_legend_str(ii)={['$H_{',int2str(m_row(ii)),',',int2str(n_row(ii)),'}(f)$']};
+    h_cols_Y_label_col(ii)="$h_{"+m_row(ii)+','+n_row(ii)+'}(t)$';
+    FRF_legend_str(ii)="$H_{"+m_row(ii)+','+n_row(ii)+'}(f)$';
 end
 
 %FRF
@@ -55,7 +55,7 @@ figure
 for n=1:n_RF_curves
     subplot(n_RF_curves,1,n)
     plot(t_row,h_cols(:,n).')
-    ylabel(h_cols_Y_label_col{n},'interpreter','latex')
+    ylabel(h_cols_Y_label_col(n),'interpreter','latex')
     if n==1
         title('IRF','interpreter','latex')
     end
@@ -67,9 +67,9 @@ for n=1:n_RF_curves
 end
 
 %Response Labels
-x_ylabel_col=cell(N,1);
+x_ylabel_col=strings(N,1);
 for ii=1:N
-    x_ylabel_col{ii}=['$x_{',int2str(ii),'}(t)$'];
+    x_ylabel_col(ii)="$x_{"+ii+'}(t)$';
 end
 x_new_ylabel_col=x_ylabel_col;
 
@@ -79,7 +79,7 @@ figure
 for n=1:N
     subplot(N,1,n)
     plot(t_row,x_rows(n,:))
-    ylabel(x_ylabel_col{n},'interpreter','latex')
+    ylabel(x_ylabel_col(n),'interpreter','latex')
     if n==1
         title('Free response','interpreter','latex')
     end
@@ -97,38 +97,38 @@ w_F1=[0.5,0.9,1,1.1,w_11_AR/w_r_vec(1),w_12_min/w_r_vec(1)]*w_r_vec(1);
 f_rows=zeros(N,n_points);
 x_rows1=zeros(N,n_points);
 x_rows2=zeros(N,n_points);
-f_rows_labels_col=cell(N,1);
+f_rows_labels_col=strings(N,1);
 ignoreTransientVector=false;
 if all(all(abs(C_mat)<=10000*eps))
     ignoreTransientVector=[true,ignoreTransientVector];
 end
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\mathrm{ss}}(');
-        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col(1)=strrep(x_ylabel_col(1),'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col(2)=strrep(x_ylabel_col(2),'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
         x_new_ylabel_col=x_ylabel_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle1=[x_new_ylabel_col{1},' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$'];
-    figureTitle2=[x_new_ylabel_col{2},' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$'];
+    figureTitle1=x_new_ylabel_col(1)+' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$';
+    figureTitle2=x_new_ylabel_col(2)+' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$';
     if  all(all(abs(C_mat)<=10000*eps))
-        figureTitle1=[figureTitle1,' for undamped system'];
-        figureTitle2=[figureTitle2,' for undamped system'];
+        figureTitle1=figureTitle1+' for undamped system';
+        figureTitle2=figureTitle2+' for undamped system';
     end
         
     for sameScale_y1=sameScale_y1_Vector
         if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
-            figureTitle1=[figureTitle1,' \underline{(never coincides with $',x_ylabel_col{1},'$,but matches $H_{1,1}(\omega)$)}'];
-            figureTitle2=[figureTitle2,' \underline{(never coincides with $',x_ylabel_col{2},'$,but matches $H_{2,1}(\omega)$)}'];                
+            figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,1}(\omega)$)}';
+            figureTitle2=figureTitle2+' \underline{(never coincides with '+x_ylabel_col(2)+', but matches $H_{2,1}(\omega)$)}';
         end
 
         for ii=1:length(w_F1)
             if w_F1(ii)==w_r_vec(1)
-                f_rows_labels_col{ii}=['$f_{1} (t),:\Omega_{1}=\omega_{1}$'];
+                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}=\omega_{1}$";
             else
-                f_rows_labels_col{ii}=['$f_{1} (t),:\Omega_{1}=',num2str(w_F1(ii)/w_r_vec(1)),'\omega_{1}$'];
+                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}="+(w_F1(ii)/w_r_vec(1))+'\omega_{1}$';
             end
             w_F_col=zeros(N,1);
             w_F_col(1)=w_F1(ii);
@@ -137,12 +137,12 @@ for ignoreTransient=ignoreTransientVector
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
-        f_rows_labels_col{end-1}='$f_{1} (t),:\Omega_{1}=\omega_{1,1}^{\mathrm{AR}}$';
-        f_rows_labels_col{end}='$f_{1} (t),:\Omega_{1}=\omega_{1,2}^{\min}$';
+        f_rows_labels_col(end-1)="$f_{1} (t),:\Omega_{1}=\omega_{1,1}^{\mathrm{AR}}$";
+        f_rows_labels_col(end)="$f_{1} (t),:\Omega_{1}=\omega_{1,2}^{\min}$";
         figure
-        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col(1),f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure
-        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col(2),f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
     end
 end
 
@@ -152,28 +152,28 @@ F_0_col(2)=1;
 w_F2=[w_12_min/w_r_vec(2),w_22_AR/w_r_vec(2),0.95,1,1.05,1.5]*w_r_vec(2);
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col{1}=strrep(x_ylabel_col{1},'(','^{\mathrm{ss}}(');
-        x_new_ylabel_col{2}=strrep(x_ylabel_col{2},'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col(1)=strrep(x_ylabel_col(1),'(','^{\mathrm{ss}}(');
+        x_new_ylabel_col(2)=strrep(x_ylabel_col(2),'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
         x_new_ylabel_col=x_ylabel_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle1=[x_new_ylabel_col{1},' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$'];
-    figureTitle2=[x_new_ylabel_col{2},' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$'];
+    figureTitle1=x_new_ylabel_col(1)+' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$';
+    figureTitle2=x_new_ylabel_col(2)+' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$';
     if  all(all(abs(C_mat)<=10000*eps))
-        figureTitle1=[figureTitle1,' for undamped system'];
-        figureTitle2=[figureTitle2,' for undamped system'];
+        figureTitle1=figureTitle1+' for undamped system';
+        figureTitle2=figureTitle2+' for undamped system';
     end
     
     for sameScale_y1=sameScale_y1_Vector
         if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
-            figureTitle1=[figureTitle1,' \underline{(never coincides with $',x_ylabel_col{1},'$,but matches $H_{1,2}(\omega)$)}'];
-            figureTitle2=[figureTitle2,' \underline{(never coincides with $',x_ylabel_col{2},'$,but matches $H_{2,2}(\omega)$)}'];                
+            figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,2}(\omega)$)}';
+            figureTitle2=figureTitle2+' \underline{(never coincides with '+x_ylabel_col(2)+', but matches $H_{2,2}(\omega)$)}';
         end
 
         for ii=1:length(w_F2)
-            f_rows_labels_col{ii}=['$f_{2} (t),:\Omega_{2}=',num2str(w_F2(ii)/w_r_vec(2)),'\omega_{2}$'];
+            f_rows_labels_col(ii)="$f_{2} (t),:\Omega_{2}="+(w_F2(ii)/w_r_vec(2))+'\omega_{2}$';
             w_F_col=zeros(N,1);
             w_F_col(2)=w_F2(ii);
             f_rows(ii,:)=F_0_col(2)*sin(w_F_col(2)*t_row);
@@ -181,11 +181,11 @@ for ignoreTransient=ignoreTransientVector
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
-        f_rows_labels_col{1}='$f_{2} (t),:\Omega_{2}=\omega_{1,2}^{\min}$';
-        f_rows_labels_col{2}='$f_{2} (t),:\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$';
+        f_rows_labels_col(1)="$f_{2} (t),:\Omega_{2}=\omega_{1,2}^{\min}$";
+        f_rows_labels_col(2)="$f_{2} (t),:\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$";
         figure
-        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col{1},f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col(1),f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
         figure
-        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col{2},f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col(2),f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
     end
 end
