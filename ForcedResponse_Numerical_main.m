@@ -16,9 +16,9 @@ T_n=1/f_n;
 T=6*T_n;
 K=1e2;
 
-[Delta_t,f_s,Delta_f]=samplingParameters_T_N(T,K);
+[D_t,f_s,D_f]=samplingParameters_T_N(T,K);
 
-t_vec=(0:K-1)*Delta_t;
+t_vec=(0:K-1)*D_t;
 
 y_func_vec=cell(4);
 y_road_rows=zeros(1,K);T_2=.5*T_n;y_road_rows(t_vec<=T_2)=1;y_func_vec{1}=@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2);
@@ -40,7 +40,7 @@ for iii=1:size(y_road_rows,1)
     ylabel('$y_{\mathrm{Road}}(t)$','interpreter','latex')
     set(gca,'XTickLabel',[]);
 
-    [y_vec_approx,t_z_vec]=forcedResponse(h_vec,y_road_rows(iii,:),Delta_t,bRaw);
+    [y_vec_approx,t_z_vec]=forcedResponse(h_vec,y_road_rows(iii,:),D_t,bRaw);
     y_func=y_func_vec{iii};
     y_vec_exact=y_func(t_z_vec,zeta);
 

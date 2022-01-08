@@ -1,12 +1,12 @@
 function [y_vec,t_vec]=forcedResponse(h_vec,x_vec, ...
-                                        Delta_t,bRaw)
+                                        D_t,bRaw)
 % If length(h_vec) is less than length(x_vec), h_vec is padded with zeros
 
 if nargin<3
-    Delta_t=1;
+    D_t=1;
 else
-    if isempty(Delta_t)
-        Delta_t=1;
+    if isempty(D_t)
+        D_t=1;
     end
 end
 
@@ -28,9 +28,9 @@ else
 end
 
 if sum(x_vec~=0)>1
-    y_vec=y_vec*Delta_t;
+    y_vec=y_vec*D_t;
 end
 
 if nargout>1
-    t_vec=(0:K-1)*Delta_t;
+    t_vec=(0:K-1)*D_t;
 end
