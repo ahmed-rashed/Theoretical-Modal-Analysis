@@ -1,4 +1,4 @@
-function [w_r_col,zeta_r_col,w_d_r_col]=MDOF_Modal_Param_Visc(s_col)
+function [w_r_col,zeta_r_col,w_d_r_col]=modal_Param_Visc(s_col)
 if ~iscolumn(s_col),error('s_col must be a column vector'),end
 
 N=length(s_col)/2;

@@ -1,4 +1,4 @@
-function state_space()
+clearvars
 clc
 close all
 
@@ -11,7 +11,7 @@ c=ones(1,N+1);
 
 [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M,CC,K,false);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=MDOF_Modal_Param_Visc(EigValues_vec);
+[w_r_vec,zeta_r_vec,w_d_r_vec]=modal_Param_Visc(EigValues_vec);
 
 %L1
 AA=[zeros(N),-K;-K,-CC];

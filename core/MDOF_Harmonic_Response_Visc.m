@@ -4,7 +4,7 @@ N=size(EigVectors_Normalized,1);
 n_col=size(t_row,2);
 n_row=size(F0_col,1);
 
-[w_r_vec,zeta_r_vec]=MDOF_Modal_Param_Visc(EigValues_vec);
+[w_r_vec,zeta_r_vec]=modal_Param_Visc(EigValues_vec);
 if any(isnan(w_r_vec))
     warning('Real pole encountered. This function assumes all poles are complex conjugates.');
 end
