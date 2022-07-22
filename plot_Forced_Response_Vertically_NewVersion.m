@@ -1,5 +1,5 @@
-function plotResponse_ForceVertically(t_row,x_rows,x_rows_label_col, ...
-                        f_rows,f_rows_labels_col,axisTitle_latex,sameScale_y1) %Optional arguments
+function plot_Forced_Response_Vertically(t_row,x_rows,x_rows_Latex_sym_col, ...
+                        f_rows,f_rows_label_col,axisTitle_latex,sameScale_y1) %Optional arguments
 
 if nargin<4
     f_rows=[];
@@ -9,7 +9,7 @@ if nargin<7
     sameScale_y1=false;
 end
 if sameScale_y1
-    axisTitle_latex=[axisTitle_latex,'; (same ',x_rows_label_col{1},' limits)'];
+    axisTitle_latex=axisTitle_latex+'; (same $'+x_rows_Latex_sym_col+'$ limits)';
 end
 
 N_signals=size(x_rows,1);
@@ -49,25 +49,25 @@ for n=1:N_signals
 
         
         yyaxis right;
-        if length(f_rows_labels_col)==1
-            if ~isempty(f_rows_labels_col{1})
-                ylabel(f_rows_labels_col{1},'interpreter','latex');
+        if length(f_rows_label_col)==1
+            if ~isempty(f_rows_label_col{1})
+                ylabel(f_rows_label_col{1},'interpreter','latex');
             end
-        elseif ~isempty(f_rows_labels_col)
-            if ~isempty(f_rows_labels_col(n))
-                ylabel(f_rows_labels_col{n},'interpreter','latex');
+        elseif ~isempty(f_rows_label_col)
+            if ~isempty(f_rows_label_col(n))
+                ylabel(f_rows_label_col{n},'interpreter','latex');
             end
         end
     end
     
     yyaxis left;
-    if length(x_rows_label_col)==1
-        if ~isempty(x_rows_label_col{1})
-            ylabel(x_rows_label_col{1},'interpreter','latex')
+    if length(x_rows_Latex_sym_col)==1
+        if ~isempty(x_rows_Latex_sym_col{1})
+            ylabel(x_rows_Latex_sym_col{1},'interpreter','latex')
         end
-    elseif ~isempty(x_rows_label_col)
-        if ~isempty(x_rows_label_col{n})
-            ylabel(x_rows_label_col{n},'interpreter','latex')
+    elseif ~isempty(x_rows_Latex_sym_col)
+        if ~isempty(x_rows_Latex_sym_col{n})
+            ylabel(x_rows_Latex_sym_col{n},'interpreter','latex')
         end
     end
     

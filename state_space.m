@@ -11,7 +11,7 @@ c=ones(1,N+1);
 
 [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M,CC,K,false);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=modal_Param_Visc(EigValues_vec);
+[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(EigValues_vec);
 
 %L1
 AA=[zeros(N),-K;-K,-CC];
@@ -45,7 +45,7 @@ w_F1=[0.5*w_d_r_vec(1),0.9*w_d_r_vec(1),w_d_r_vec(1),1.1*w_d_r_vec(1),(w_d_r_vec
 for ii=1:length(w_F1)
     f=F_0_col(1)*sin(w_F1(ii)*t_row.');
     [x_mat,t_col]=lsim(sys,[0*f,0*f,f,0*f],t_row.');
-    plot_Forced_Response_Vertically(t_row,x_mat(:,1:N).',x_mat_label_col,f.',{'f_1'},"$w_{0}_1="+(w_F1(ii)/w_d_r_vec(1))+'\ \omega_{\mathrm{d},1}$')
+    plot_Forced_Response_Vertically(t_row,x_mat(:,1:N).',x_mat_label_col,f.',"f_1","$w_{0}_1="+(w_F1(ii)/w_d_r_vec(1))+'\ \omega_{\mathrm{d},1}$')
 end
 
 F_0_col=[0;1];
@@ -53,5 +53,5 @@ w_F1=[(w_d_r_vec(1)+w_d_r_vec(2))/2,0.9*w_d_r_vec(2),w_d_r_vec(2),1.1*w_d_r_vec(
 for ii=1:length(w_F1)
     f=F_0_col(2)*sin(w_F1(ii)*t_row.');
     [x_mat,t_col]=lsim(sys,[0*f,0*f,0*f,f],t_row.');
-    plot_Forced_Response_Vertically(t_row,x_mat(:,1:N).',x_mat_label_col,f.',{'f_2'},"$w_{0}_2="+(w_F1(ii)/w_d_r_vec(2))+'\ \omega_{\mathrm{d},2}$')
+    plot_Forced_Response_Vertically(t_row,x_mat(:,1:N).',x_mat_label_col,f.',"f_2","$w_{0,2}="+(w_F1(ii)/w_d_r_vec(2))+'\ \omega_{\mathrm{d},2}$')
 end

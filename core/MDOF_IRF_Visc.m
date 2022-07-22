@@ -1,12 +1,15 @@
 function h_cols= ...
-MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_col,m_row,n_row)
+MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_col,m_vec,n_vec)
 
-N=size(EigVectors_Normalized,1);
-n=size(t_col,1);
-n_col=size(m_row,2);
+[N,Q]=size(EigVectors_Normalized);
+if Q~=2*N,error('EigVectors_Normalized should be N x 2N matrix.'),end
+K=size(t_col,1);
+if ~isvector(m_vec),error('m_vec must be a vector!'),end
+if (any(size(m_vec)~=size(n_vec)));error('Dimensions of m_row and n_row must be identical');end
+N_IRF=length(m_vec);
 
-h_cols=zeros(n,n_col);
-A_ind_row=sub2ind([N,N],m_row,n_row);
+h_cols=zeros(K,N_IRF);
+A_ind_row=sub2ind([N,N],m_vec(:).',n_vec(:).');
 
 for r=1:2*N
     A_r=EigVectors_Normalized(:,r)*EigVectors_Normalized(:,r).';

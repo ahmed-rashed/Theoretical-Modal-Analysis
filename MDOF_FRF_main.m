@@ -40,7 +40,7 @@ if any(abs(H_cols-H_cols2)>100*eps)
 end
 
 for ii=1:length(m_row)
-    H_subtitle=['H_{',int2str(m_row(ii)),',',int2str(n_row(ii)),'}'];
+    H_subtitle="H_{"+m_row(ii)+','+n_row(ii)+'}';
     figure
     plot_FRF_3d(f_col,H_cols(:,ii),'',H_subtitle,1,0);
     

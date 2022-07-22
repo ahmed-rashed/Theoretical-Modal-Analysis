@@ -24,9 +24,9 @@ for n_FRF=1:N_FRF
         h3=plot_FRF_Nyq(H_cols_SDOF(:,n_FRF,r));
     end
     
-    plot_FRF_mag_phase(f_col,H_cols(:,n_FRF),false,ax_mag,ax_phase,'',['H_{',int2str(m_row(n_FRF)),',',int2str(n_row(n_FRF)),'}'],0,maxPhaseLag,'k','LineWidth',1.5*get(h1,'LineWidth'));
+    plot_FRF_mag_phase(f_col,H_cols(:,n_FRF),false,ax_mag,ax_phase,'',"H_{"+m_row(n_FRF)+','+n_row(n_FRF)+'}',0,maxPhaseLag,'k','LineWidth',1.5*get(h1,'LineWidth'));
 
     subplot(ax_Nyq)
-   %plot_FRF_Nyq(H_cols(:,n_FRF),[],['H_{',int2str(m_row(n_FRF)),',',int2str(n_row(n_FRF)),'}'],0,'k','LineWidth',1.5*get(h3,'LineWidth'));
-    plot_FRF_Nyq(H_cols(:,n_FRF),[],['H_{',int2str(m_row(n_FRF)),',',int2str(n_row(n_FRF)),'}'],0,'k');
+   %plot_FRF_Nyq(H_cols(:,n_FRF),[],"H_{"+m_row(n_FRF)+','+n_row(n_FRF)+'}',0,'k','LineWidth',1.5*get(h3,'LineWidth'));
+    plot_FRF_Nyq(H_cols(:,n_FRF),[],"H_{"+m_row(n_FRF)+','+n_row(n_FRF)+'}',0,'k');
 end

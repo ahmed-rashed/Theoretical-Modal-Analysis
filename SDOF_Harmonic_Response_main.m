@@ -52,12 +52,12 @@ for n=1:N_zeta
 
     %Vibrometer response
     figure
-    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+1.5*2*pi/w_0,w_0),Disp_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{Base}}(t)=\sin(\omega_{0}t)','y_{\mathrm{Base}}(t)','q(t+1.5T_{0})',sameScale_y1);
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+1.5*2*pi/w_0,w_0),Disp_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{B}}(t)=\sin(\omega_{0}t)','y_{\mathrm{B}}(t)','q(t+1.5T_{0})',sameScale_y1);
     filenames(2*n-1)="Vibrometer"+n;
 
     %Accelerometer response
     figure
-    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+.5*2*pi/w_0,w_0),Acc_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{Base}}(t)=\sin(\omega_{0}t)','\ddot{y}_{\mathrm{Base}}(t)','q(t+0.5T_{0})',sameScale_y1);                                 
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,w_0) q_func(t_row+.5*2*pi/w_0,w_0),Acc_base_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{B}}(t)=\sin(\omega_{0}t)','\ddot{y}_{\mathrm{B}}(t)','q(t+0.5T_{0})',sameScale_y1);                                 
     filenames(2*n)="Accelerometer"+n;
 end
 export_figure(max(double(get(groot,'Children')))+(-2*N_zeta:-1)+1,'||',filenames)
@@ -78,11 +78,11 @@ for n=1:N_zeta
     y_Acc_Vehicle=@(t_row,w_0) SDOF_Vehicle_Harmonic_Acc_Response_Visc(Y0,w_0,w_n,zeta_vec(n),t_row);
 
     figure
-    SDOF_Plot_Harmonic_Response(t_row,y_Vehicle,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{Road}}(t)=\sin(\omega_{0}t)','y_{\mathrm{Road}}(t)','y(t)',sameScale_y1);
+    SDOF_Plot_Harmonic_Response(t_row,y_Vehicle,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{R}}(t)=\sin(\omega_{0}t)','y_{\mathrm{R}}(t)','y(t)',sameScale_y1);
     filenames(2*n-1)="VehicleResponse"+n;
 
     figure
-    SDOF_Plot_Harmonic_Response(t_row,y_Acc_Vehicle,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{Road}}(t)=\sin(\omega_{0}t)','y_{\mathrm{Road}}(t)','\ddot{y}(t)',sameScale_y1);
+    SDOF_Plot_Harmonic_Response(t_row,y_Acc_Vehicle,y_road_func,w_n,zeta_vec(n),w_0_vec,'y_{\mathrm{R}}(t)=\sin(\omega_{0}t)','y_{\mathrm{R}}(t)','\ddot{y}(t)',sameScale_y1);
     filenames(2*n)="VehicleACC"+n;
 end
 export_figure(max(double(get(groot,'Children')))+(-2*N_zeta:-1)+1,'||',filenames)

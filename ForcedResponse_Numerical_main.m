@@ -37,7 +37,7 @@ for iii=1:size(y_road_rows,1)
 
     subplot(3,1,2)
     plot(t_vec/T_n,y_road_rows(iii,:),'.-');
-    ylabel('$y_{\mathrm{Road}}(t)$','interpreter','latex')
+    ylabel('$y_{\mathrm{R}}(t)$','interpreter','latex')
     set(gca,'XTickLabel',[]);
 
     [y_vec_approx,t_z_vec]=forcedResponse(h_vec,y_road_rows(iii,:),D_t,bRaw);

@@ -22,7 +22,7 @@ w_column=2*pi*f_column;
 
 [EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,isProportional,display_EVD_Details);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=modal_Param_Visc(EigValues_vec)
+[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(EigValues_vec)
 
 %TF
 H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized);
