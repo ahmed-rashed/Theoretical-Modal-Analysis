@@ -1,5 +1,5 @@
 function MDOF_Prob(M_mat,C_mat,K_mat,x_0_col,x_dot_0_col,m_row,n_row,t_row,f_column,...
-				   isProportional,maxPhaseLag,display_EVD_Details)	%Optional arguments
+                   isProportional,maxPhaseLag,display_EVD_Details)  %Optional arguments
 
 if nargin<10
     isProportional=false;
@@ -117,7 +117,7 @@ for ignoreTransient=ignoreTransientVector
         figureTitle1=figureTitle1+' for undamped system';
         figureTitle2=figureTitle2+' for undamped system';
     end
-        
+
     for sameScale_y1=sameScale_y1_Vector
         if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
             figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,1}(\omega)$)}';
@@ -165,7 +165,7 @@ for ignoreTransient=ignoreTransientVector
         figureTitle1=figureTitle1+' for undamped system';
         figureTitle2=figureTitle2+' for undamped system';
     end
-    
+
     for sameScale_y1=sameScale_y1_Vector
         if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
             figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,2}(\omega)$)}';

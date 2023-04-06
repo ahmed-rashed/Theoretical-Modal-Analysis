@@ -1,5 +1,5 @@
 function [EigVectors_Normalized,s_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat, ...
-				 isPropotional,displayDetails)     %Optional arguments
+                 isPropotional,displayDetails)     %Optional arguments
 if nargin<4
     isPropotional=false;
 end
@@ -11,7 +11,7 @@ end
 N=size(M_mat,1);
 if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     [EigVectors_U,s_U_vec]=eig(K_mat,M_mat,'chol','vector');
-    
+
     %Sort eigenvalues and corresponding eignvectors
     [~,Index]=sort(abs(s_U_vec));
     s_U_vec=s_U_vec(Index);
@@ -38,7 +38,7 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         EigVectors_U
     end
-    
+
     IndexTemp=find(abs(s_U_vec)<=s_U_prec);
     if ~isempty(IndexTemp)
         if ~displayDetails
@@ -49,25 +49,25 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
         warning('Small eigenvalues and small elements in eigenvectors are manually reset to zero as follows:')
         disp('Press any key to continue');
         pause
-        
+
         s_U_vec(IndexTemp)=0;s_U_vec
         EigVectors_U(abs(EigVectors_U)<=s_U_prec)=0
     end
-    
+
     M_r_mat=EigVectors_U.'*M_mat*EigVectors_U;M_r_mat(abs(M_r_mat)<100*eps)=0;
     M_r_col=diag(M_r_mat);
     w_U_r_col=sqrt(s_U_vec);
     C_r_mat=EigVectors_U.'*C_mat*EigVectors_U;C_r_mat(abs(C_r_mat)<100*eps)=0;
     C_r_col=diag(C_r_mat);
-    
+
     if displayDetails
         M_r_mat
         C_r_mat
     end
-    
+
     %zeta_r_col=C_r_col/2./M_r_col./w_U_r_col;
     w_d_r_col=sqrt(w_U_r_col.^2-(C_r_col/2./M_r_col).^2);    %This is instead "w_U_r_mat.*sqrt(1-zeta_r_mat.^2)" to avoid the 0*inf in case w_U_r=0
-    
+
     s_vec_temp1=-C_r_col/2./M_r_col-1i*w_d_r_col;
     s_vec_temp2=-C_r_col/2./M_r_col+1i*w_d_r_col;   %For overdamped proportional damping, Eigenvalues become real distinct
 
@@ -80,7 +80,7 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     EigVectors_Normalized(:,2:2:2*N)  =EigVectors_U/sqrt( 1i*2*diag(w_d_r_col).*M_r_mat);      %w_d_r_col may be complex for over damped modes
 else    %Non-proportional
     [EigVectors_Normalized,s_vec]=quad_eig(K_mat,C_mat,M_mat);
-    
+
     %Sort eigenvalues and corresponding eignvectors
     [~,Index]=sort(abs(imag(s_vec)));
     s_vec=s_vec(Index);
@@ -91,7 +91,7 @@ end
 if displayDetails
     s_vec
     EigVectors_Normalized,
-    
+
     for r=1:2*N
         if imag(s_vec(r))~=0 && mod(r,2)==0   %complex eigenvalue and even r
             continue
