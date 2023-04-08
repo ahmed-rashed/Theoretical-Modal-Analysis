@@ -14,8 +14,7 @@ elseif L==2 %L2 form
     B=[C_mat,M_mat;N_mat,0*M_mat];
 end
 
-[Phi,Val_mat]=eig(A,B);
-Val_vec=diag(Val_mat);
+[Phi,Val_vec]=eig(A,B,"vector");
 
 %Check the accuracy of eigendecomposition
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
