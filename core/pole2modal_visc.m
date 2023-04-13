@@ -5,8 +5,7 @@ Q=length(s_pairs_col);
 P=Q/2;
 if rem(P,1)~=0,error('s_pairs_col must be a vector of even number of elements.'),end
 
-if any(isreal(s_pairs_col)~=repmat(isreal(s_pairs_col(1:2:end)),2)),error('s_pairs_col must consists of consecutive pairs of real or complex numbers.'),end
-if any(imag(s_pairs_col(1:2:end))~=-imag(s_pairs_col(2:2:end))),error('Complex numbers in s_pairs_col must be consecutive conjugate pairs.'),end
+if any(imag(s_pairs_col(1:2:end))~=-imag(s_pairs_col(2:2:end))),error('Elements of s_pairs_col must be consecutive real or complex conjugate pairs.'),end
 
 q_underDamped_vec_temp=find(imag(s_pairs_col)~=0);
 q_underDamped_vec=q_underDamped_vec_temp(1:2:end-1);

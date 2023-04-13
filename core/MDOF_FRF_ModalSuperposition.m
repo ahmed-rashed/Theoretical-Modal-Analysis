@@ -6,7 +6,7 @@ if nargin<5
 end
 
 H_cols=sum(H_cols_SDOF,3);
-[~,N_FRF,N]=size(H_cols_SDOF);
+[~,N_FRF,P]=size(H_cols_SDOF);
 FigMag=figure;
 FigNyq=figure;
 for n_FRF=1:N_FRF
@@ -17,11 +17,11 @@ for n_FRF=1:N_FRF
     figure(FigNyq)
     ax_Nyq=subplot(1,N_FRF,n_FRF);hold on
 
-    for r=1:N
-        [~,~,h1,h2]=plot_FRF_mag_phase(f_col,H_cols_SDOF(:,n_FRF,r),false,ax_mag,ax_phase,'','',[],maxPhaseLag);
+    for p=1:P
+        [~,~,h1,h2]=plot_FRF_mag_phase(f_col,H_cols_SDOF(:,n_FRF,p),false,ax_mag,ax_phase,'','',[],maxPhaseLag);
 
         subplot(ax_Nyq)
-        h3=plot_FRF_Nyq(H_cols_SDOF(:,n_FRF,r));
+        h3=plot_FRF_Nyq(H_cols_SDOF(:,n_FRF,p));
     end
     
     plot_FRF_mag_phase(f_col,H_cols(:,n_FRF),false,ax_mag,ax_phase,'',"H_{"+m_row(n_FRF)+','+n_row(n_FRF)+'}',0,maxPhaseLag,'k','LineWidth',1.5*get(h1,'LineWidth'));

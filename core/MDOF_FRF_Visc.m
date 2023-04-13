@@ -8,9 +8,9 @@ if (any(size(m_vec)~=size(n_vec)));error('Dimensions of m_row and n_row must be 
 N_FRF=length(m_vec);
 
 H_cols_SDOF_pages=zeros(N_w,N_FRF,P);
-for q=1:2*P
-    A_r_row=EigVectors_Normalized(m_vec,q).'.*EigVectors_Normalized(n_vec,q).';
-    r=ceil(q/2);
-    H_cols_SDOF_pages(:,:,r)=H_cols_SDOF_pages(:,:,r)+(1./(1i*w_col-EigValues_vec(q)))*A_r_row;
+for q=1:Q
+    A_q_row=EigVectors_Normalized(m_vec,q).'.*EigVectors_Normalized(n_vec,q).';
+    p=ceil(q/2);
+    H_cols_SDOF_pages(:,:,p)=H_cols_SDOF_pages(:,:,p)+(1./(1i*w_col-EigValues_vec(q)))*A_q_row;
 end
 H_cols=sum(H_cols_SDOF_pages,3);
