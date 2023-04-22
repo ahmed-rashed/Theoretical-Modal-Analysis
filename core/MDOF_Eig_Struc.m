@@ -1,4 +1,4 @@
-function [EigVectors_Normalized,EigValues_vec]= ...
+function [EigVectors_Normalized,s_q_vec]= ...
 MDOF_Eig_Struc(M_mat,D_mat,K_mat,...
 				 displayDetails)     %Optional arguments
 
@@ -62,9 +62,9 @@ w_d_p_col=sqrt(w_U_p_col.^2-(C_p_col/2./M_p_col).^2);    %This is instead "w_U_p
 EigValues_vec_temp1=-C_p_col/2./M_p_col-1i*w_d_p_col;
 EigValues_vec_temp2=-C_p_col/2./M_p_col+1i*w_d_p_col;   %Eigenvalues not necessarily complex conjugate pairs
 
-EigValues_vec=zeros(2*P,1);
-EigValues_vec(1:2:2*P-1)=EigValues_vec_temp1;
-EigValues_vec(2:2:2*P)=EigValues_vec_temp2;
+s_q_vec=zeros(2*P,1);
+s_q_vec(1:2:2*P-1)=EigValues_vec_temp1;
+s_q_vec(2:2:2*P)=EigValues_vec_temp2;
 
 EigVectors_Normalized=zeros(P,2*P);
 EigVectors_Normalized(:,1:2:2*P-1)=EigVectors_H/sqrt(-i*2*diag(w_d_p_col).*M_p_mat);
@@ -72,11 +72,11 @@ EigVectors_Normalized(:,2:2:2*P)=EigVectors_H/sqrt(i*2*diag(w_d_p_col).*M_p_mat)
 
 %Only necesary for display
 if displayDetails
-    EigValues_vec
+    s_q_vec
     EigVectors_Normalized,
     
     for p=1:2*P
-        if imag(EigValues_vec(p))~=0 && mod(p,2)==0   %complex eigenvalue and even p
+        if imag(s_q_vec(p))~=0 && mod(p,2)==0   %complex eigenvalue and even p
             continue
         end
 

@@ -1,4 +1,4 @@
-function [EigVectors_Normalized,s_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat, ...
+function [EigVectors_Normalized,s_q_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat, ...
                  isPropotional,displayDetails)     %Optional arguments
 if nargin<4
     isPropotional=false;
@@ -71,29 +71,29 @@ if isPropotional || all(all(C_mat==0))    %Undamped or proportional
     s_vec_temp1=-C_p_col/2./M_p_col-1i*w_d_p_col;
     s_vec_temp2=-C_p_col/2./M_p_col+1i*w_d_p_col;   %For overdamped proportional damping, Eigenvalues become real distinct
 
-    s_vec=zeros(2*P,1);
-    s_vec(1:2:2*P-1)=s_vec_temp1;
-    s_vec(2:2:2*P)=s_vec_temp2;
+    s_q_vec=zeros(2*P,1);
+    s_q_vec(1:2:2*P-1)=s_vec_temp1;
+    s_q_vec(2:2:2*P)=s_vec_temp2;
 
     EigVectors_Normalized=zeros(P,2*P);
     EigVectors_Normalized(:,1:2:2*P-1)=EigVectors_U/sqrt(-1i*2*diag(w_d_p_col).*M_p_mat);
     EigVectors_Normalized(:,2:2:2*P)  =EigVectors_U/sqrt( 1i*2*diag(w_d_p_col).*M_p_mat);      %w_d_p_col may be complex for over damped modes
 else    %Non-proportional
-    [EigVectors_Normalized,s_vec]=quad_eig(K_mat,C_mat,M_mat);
+    [EigVectors_Normalized,s_q_vec]=quad_eig(K_mat,C_mat,M_mat);
 
     %Sort eigenvalues and corresponding eignvectors
-    [~,Index]=sort(abs(imag(s_vec)));
-    s_vec=s_vec(Index);
+    [~,Index]=sort(abs(imag(s_q_vec)));
+    s_q_vec=s_q_vec(Index);
     EigVectors_Normalized=EigVectors_Normalized(:,Index);
 end
 
 %Only necesary for display
 if displayDetails
-    s_vec
+    s_q_vec
     EigVectors_Normalized,
 
     for p=1:2*P
-        if imag(s_vec(p))~=0 && mod(p,2)==0   %complex eigenvalue and even p
+        if imag(s_q_vec(p))~=0 && mod(p,2)==0   %complex eigenvalue and even p
             continue
         end
 

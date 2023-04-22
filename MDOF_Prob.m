@@ -20,12 +20,12 @@ n_RF_curves=length(m_row);
 
 w_column=2*pi*f_column;
 
-[EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,isProportional,display_EVD_Details);
+[EigVectors_Normalized,s_q_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,isProportional,display_EVD_Details);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(EigValues_vec)
+[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(s_q_vec)
 
 %TF
-H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized);
+H_s_mat=MDOF_TF_Visc(s_q_vec,EigVectors_Normalized);
 
 %FRF & IRF labels
 h_cols_Y_label_col=strings(n_RF_curves,1);
@@ -36,7 +36,7 @@ for ii=1:n_RF_curves
 end
 
 %FRF
-H_w_n_m_cols=MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w_column,m_row,n_row);
+H_w_n_m_cols=MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w_column,m_row,n_row);
 figure
 ax_mag=plot_FRF_mag_phase(f_column,H_w_n_m_cols,false,[],[],[],[],[],maxPhaseLag);
 legend(ax_mag,FRF_legend_str,'interpreter','latex')
@@ -45,12 +45,12 @@ plot_FRF_Nyq(H_w_n_m_cols);
 legend(FRF_legend_str,'interpreter','latex')
 
 %Antiresonance and minimum FRF
-[w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w,1,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w,2,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(EigValues_vec,EigVectors_Normalized,w,2,2)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,1,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,2)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
 
 %IRF
-h_cols=MDOF_IRF_Visc(EigValues_vec,EigVectors_Normalized,t_row.',m_row,n_row);
+h_cols=MDOF_IRF_Visc(s_q_vec,EigVectors_Normalized,t_row.',m_row,n_row);
 figure
 for n=1:n_RF_curves
     subplot(n_RF_curves,1,n)
@@ -74,7 +74,7 @@ end
 x_new_ylabel_col=x_ylabel_col;
 
 %Free response
-x_rows=MDOF_Free_Response_Visc(M_mat,C_mat,EigValues_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row);
+x_rows=MDOF_Free_Response_Visc(M_mat,C_mat,s_q_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row);
 figure
 for n=1:N
     subplot(N,1,n)
@@ -133,7 +133,7 @@ for ignoreTransient=ignoreTransientVector
             w_F_col=zeros(N,1);
             w_F_col(1)=w_F1(ii);
             f_rows(ii,:)=F_0_col(1)*sin(w_F_col(1)*t_row);
-            x_rows_temp=MDOF_Harmonic_Response_Visc(EigValues_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
+            x_rows_temp=MDOF_Harmonic_Response_Visc(s_q_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end
@@ -177,7 +177,7 @@ for ignoreTransient=ignoreTransientVector
             w_F_col=zeros(N,1);
             w_F_col(2)=w_F2(ii);
             f_rows(ii,:)=F_0_col(2)*sin(w_F_col(2)*t_row);
-            x_rows_temp=MDOF_Harmonic_Response_Visc(EigValues_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
+            x_rows_temp=MDOF_Harmonic_Response_Visc(s_q_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
             x_rows1(ii,:)=x_rows_temp(1,:);
             x_rows2(ii,:)=x_rows_temp(2,:);
         end

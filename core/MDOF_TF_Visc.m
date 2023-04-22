@@ -1,4 +1,4 @@
-function H_s_mat=MDOF_TF_Visc(EigValues_vec,EigVectors_Normalized)
+function H_s_mat=MDOF_TF_Visc(s_q_vec,EigVectors_Normalized)
 
 P=size(EigVectors_Normalized,1);
 
@@ -10,7 +10,7 @@ H_s_mat_SDOF=H_s_mat;
 for q=1:2*P
     A_q=EigVectors_Normalized(:,q)*EigVectors_Normalized(:,q).';
     num=num2cell(A_q);
-    den=[1,-EigValues_vec(q)];
+    den=[1,-s_q_vec(q)];
     tf_i=tf(num,den);
     H_s_mat=H_s_mat+tf_i;
     H_s_mat_SDOF=H_s_mat_SDOF+tf_i;

@@ -1,5 +1,5 @@
 function x_rows= ...
-MDOF_Free_Response_Visc(M,C,EigValues_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row)
+MDOF_Free_Response_Visc(M,C,s_q_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row)
 
 P=size(EigVectors_Normalized,1);
 n_col=size(t_row,2);
@@ -10,11 +10,11 @@ v_1=M*x_0_col;
 v_3=C*x_0_col+M*x_dot_0_col;
 for p=1:2*P
     A_r=EigVectors_Normalized(:,p)*EigVectors_Normalized(:,p).';
-    x_rows=x_rows+A_r*(EigValues_vec(p)*v_1*exp(EigValues_vec(p)*t_row)+v_3*exp(EigValues_vec(p)*t_row));
+    x_rows=x_rows+A_r*(s_q_vec(p)*v_1*exp(s_q_vec(p)*t_row)+v_3*exp(s_q_vec(p)*t_row));
     
     %For Display only
-    w_d_r=abs(imag(EigValues_vec(p)));
-    zeta_r_w_r=-real(EigValues_vec(p));
+    w_d_r=abs(imag(s_q_vec(p)));
+    zeta_r_w_r=-real(s_q_vec(p));
     if w_d_r~=0 && mod(p,2)~=0  %Odd p
         disp('Free Response parameters');
         p %#ok<NOPRT>

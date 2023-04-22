@@ -9,9 +9,9 @@ k=[100,150,100];
 c=ones(1,N+1);
 [M,CC,K]=N_DOF_sys(m,c,k);
 
-[EigVectors_Normalized,EigValues_vec]=MDOF_Eig_Visc(M,CC,K,false);
+[EigVectors_Normalized,s_q_vec]=MDOF_Eig_Visc(M,CC,K,false);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(EigValues_vec);
+[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(s_q_vec);
 
 %L1
 AA=[zeros(N),-K;-K,-CC];
