@@ -39,17 +39,17 @@ if ~isempty(IndexTemp)
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-B_r_vec=diag(Phi.'*B*Phi);
+B_p_vec=diag(Phi.'*B*Phi);
 
 Phi_normalized=Phi;
 if L==1 %L1
-	for ii=1:2*N
-		Phi_normalized(:,ii)=Phi_normalized(:,ii)*sqrt(Val_vec(ii)/B_r_vec(ii));
-	end
+    for ii=1:2*N
+        Phi_normalized(:,ii)=Phi_normalized(:,ii)*sqrt(Val_vec(ii)/B_p_vec(ii));
+    end
 elseif L==2 %L2
-	for ii=1:2*N
-		Phi_normalized(:,ii)=Phi_normalized(:,ii)/sqrt(B_r_vec(ii));
-	end
+    for ii=1:2*N
+        Phi_normalized(:,ii)=Phi_normalized(:,ii)/sqrt(B_p_vec(ii));
+    end
 end
 
 Epsi_normalized=Phi_normalized(1:N,:);

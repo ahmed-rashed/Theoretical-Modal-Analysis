@@ -22,7 +22,7 @@ w_column=2*pi*f_column;
 
 [EigVectors_Normalized,s_q_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,isProportional,display_EVD_Details);
 
-[w_r_vec,zeta_r_vec,w_d_r_vec]=pole2modal_visc(s_q_vec)
+[w_p_vec,zeta_p_vec,w_d_p_vec]=pole2modal_visc(s_q_vec)
 
 %TF
 H_s_mat=MDOF_TF_Visc(s_q_vec,EigVectors_Normalized);
@@ -45,9 +45,9 @@ plot_FRF_Nyq(H_w_n_m_cols);
 legend(FRF_legend_str,'interpreter','latex')
 
 %Antiresonance and minimum FRF
-[w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,1,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,1)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
-[w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,2)),w_d_r_vec(1),w_d_r_vec(2),optimset('TolX',1e-10))
+[w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,1,1)),w_d_p_vec(1),w_d_p_vec(2),optimset('TolX',1e-10))
+[w_12_min,H_12_min]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,1)),w_d_p_vec(1),w_d_p_vec(2),optimset('TolX',1e-10))
+[w_22_AR,H_22_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,2,2)),w_d_p_vec(1),w_d_p_vec(2),optimset('TolX',1e-10))
 
 %IRF
 h_cols=MDOF_IRF_Visc(s_q_vec,EigVectors_Normalized,t_row.',m_row,n_row);
@@ -93,7 +93,7 @@ end
 %Harmonic response 1
 F_0_col=zeros(N,1);
 F_0_col(1)=1;
-w_F1=[0.5,0.9,1,1.1,w_11_AR/w_r_vec(1),w_12_min/w_r_vec(1)]*w_r_vec(1);
+w_F1=[0.5,0.9,1,1.1,w_11_AR/w_p_vec(1),w_12_min/w_p_vec(1)]*w_p_vec(1);
 f_rows=zeros(N,n_points);
 x_rows1=zeros(N,n_points);
 x_rows2=zeros(N,n_points);
@@ -125,10 +125,10 @@ for ignoreTransient=ignoreTransientVector
         end
 
         for ii=1:length(w_F1)
-            if w_F1(ii)==w_r_vec(1)
+            if w_F1(ii)==w_p_vec(1)
                 f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}=\omega_{1}$";
             else
-                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}="+(w_F1(ii)/w_r_vec(1))+'\omega_{1}$';
+                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}="+(w_F1(ii)/w_p_vec(1))+'\omega_{1}$';
             end
             w_F_col=zeros(N,1);
             w_F_col(1)=w_F1(ii);
@@ -149,7 +149,7 @@ end
 %Harmonic response 2
 F_0_col=zeros(N,1);
 F_0_col(2)=1;
-w_F2=[w_12_min/w_r_vec(2),w_22_AR/w_r_vec(2),0.95,1,1.05,1.5]*w_r_vec(2);
+w_F2=[w_12_min/w_p_vec(2),w_22_AR/w_p_vec(2),0.95,1,1.05,1.5]*w_p_vec(2);
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
         x_new_ylabel_col(1)=strrep(x_ylabel_col(1),'(','^{\mathrm{ss}}(');
@@ -173,7 +173,7 @@ for ignoreTransient=ignoreTransientVector
         end
 
         for ii=1:length(w_F2)
-            f_rows_labels_col(ii)="$f_{2} (t),:\Omega_{2}="+(w_F2(ii)/w_r_vec(2))+'\omega_{2}$';
+            f_rows_labels_col(ii)="$f_{2} (t),:\Omega_{2}="+(w_F2(ii)/w_p_vec(2))+'\omega_{2}$';
             w_F_col=zeros(N,1);
             w_F_col(2)=w_F2(ii);
             f_rows(ii,:)=F_0_col(2)*sin(w_F_col(2)*t_row);
