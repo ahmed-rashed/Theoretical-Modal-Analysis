@@ -45,7 +45,7 @@ for iii=1:size(y_road_rows,1)
     y_vec_exact=y_func(t_z_vec,zeta);
 
     ax=subplot(3,1,3);
-    plot_response(t_z_vec,y_func_vec{iii},zeta,'$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}$','','',1/T_n,ax,'southeast');
+    plot_response(t_z_vec,y_func_vec{iii},zeta,"$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}="+T_n+'$','','',1/T_n,ax,'southeast');
     ylabel('$y(t)$','interpreter','latex');
     grid on
 

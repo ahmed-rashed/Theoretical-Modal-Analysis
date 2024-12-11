@@ -29,20 +29,20 @@ H_s_mat=MDOF_TF_Visc(s_q_vec,EigVectors_Normalized);
 
 %FRF & IRF labels
 h_cols_Y_label_col=strings(n_RF_curves,1);
-FRF_legend_str=strings(n_RF_curves,1);
+FRF_legend_str_vec=strings(n_RF_curves,1);
 for ii=1:n_RF_curves
     h_cols_Y_label_col(ii)="$h_{"+m_row(ii)+','+n_row(ii)+'}(t)$';
-    FRF_legend_str(ii)="$H_{"+m_row(ii)+','+n_row(ii)+'}(f)$';
+    FRF_legend_str_vec(ii)="$H_{"+m_row(ii)+','+n_row(ii)+'}(f)$';
 end
 
 %FRF
 H_w_n_m_cols=MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w_column,m_row,n_row);
 figure
 ax_mag=plot_FRF_mag_phase(f_column,H_w_n_m_cols,false,[],[],[],[],[],maxPhaseLag);
-legend(ax_mag,FRF_legend_str,'interpreter','latex')
+legend(ax_mag,FRF_legend_str_vec,'interpreter','latex')
 figure;
 plot_FRF_Nyq(H_w_n_m_cols);
-legend(FRF_legend_str,'interpreter','latex')
+legend(FRF_legend_str_vec,'interpreter','latex')
 
 %Antiresonance and minimum FRF
 [w_11_AR,H_11_AR]=fminbnd(@(w) abs(MDOF_FRF_Visc(s_q_vec,EigVectors_Normalized,w,1,1)),w_d_p_vec(1),w_d_p_vec(2),optimset('TolX',1e-10))

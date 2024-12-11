@@ -50,7 +50,7 @@ for n=1:N_signals
         set(AX(2),'XTickLabel',[]);
         
         AX1(n)=AX(1);
-        if length(f_rows_label_col)==1
+        if isscalar(f_rows_label_col)
             if ~isempty(f_rows_label_col{1})
                 ylabel(f_rows_label_col{1},'interpreter','latex');
             end

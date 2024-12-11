@@ -62,7 +62,7 @@ zlim(ax_Lims_Nyq(3:4));
 set(cla,'ZTick',imag_ticks);
 hold on
 
-Fig_r_i=figure;
+Fig_r_i=figure; %#ok<NASGU>
 ax_r=subplot(2,1,1);
 ylim(ax_Lims_Nyq(1:2));
 set(ax_r,'YTick',real_ticks);
@@ -72,25 +72,25 @@ ylim(ax_Lims_Nyq(3:4));
 set(ax_i,'YTick',imag_ticks);
 hold on
 
-Fig_Bode1=figure;
+Fig_Bode1=figure; %#ok<NASGU>
 
 [ax_mag1]=plot_FRF_mag_phase(r_vec,H_temp_vec,[],[],[],[],[],[],maxPhaseLag);
 v=axis(ax_mag1);
 clf;
 
-ax_mag1=subplot(4,1,[1:3]);hold on
+ax_mag1=subplot(4,1,1:3);hold on
 ylim(ax_mag1,v(3:4));
 ax_phase1=subplot(4,1,4);hold on
 
-Fig_Bode2=figure;
-ax_mag2=subplot(4,1,[1:3]);hold on
+Fig_Bode2=figure; %#ok<NASGU>
+ax_mag2=subplot(4,1,1:3);hold on
 ax_phase2=subplot(4,1,4);hold on
 
-Fig_Bode3=figure;
-ax_mag3=subplot(4,1,[1:3]);hold on
+Fig_Bode3=figure; %#ok<NASGU>
+ax_mag3=subplot(4,1,1:3);hold on
 ax_phase3=subplot(4,1,4);hold on
 
-legend_str=strings(length(zeta_vec),1);
+legend_str_vec=strings(length(zeta_vec),1);
 for ii=1:length(zeta_vec)
     H_vec=H_func(r_vec,zeta_vec(ii));
 
@@ -115,13 +115,13 @@ for ii=1:length(zeta_vec)
     plot_FRF_mag_phase(r_vec,H_vec,[false,false],ax_mag3,ax_phase3,r_label,H_subtitle,DispMagLines,maxPhaseLag);
     
     if zeta_vec(ii)==0
-        legend_str(ii)="$"+zeta_subtitle+'=0;\;\mathrm{misleading}$';
+        legend_str_vec(ii)="$"+zeta_subtitle+'=0;\;\mathrm{misleading}$';
     elseif zeta_vec(ii)==1/sqrt(2)
-        legend_str(ii)="$"+zeta_subtitle+'=1/\sqrt{2}$';
+        legend_str_vec(ii)="$"+zeta_subtitle+'=1/\sqrt{2}$';
     elseif zeta_vec(ii)==sqrt(2)
-        legend_str(ii)="$"+zeta_subtitle+'=\sqrt{2}$';
+        legend_str_vec(ii)="$"+zeta_subtitle+'=\sqrt{2}$';
     else
-        legend_str(ii)="$"+zeta_subtitle+'='+zeta_vec(ii)+'$';
+        legend_str_vec(ii)="$"+zeta_subtitle+'='+zeta_vec(ii)+'$';
     end
 end
 
@@ -145,17 +145,17 @@ if nargin>9
 end
 
 figure(Fig_3D)
-legend(legend_str,'interpreter','latex','Location','bestOutside')
+legend(legend_str_vec,'interpreter','latex','Location','bestOutside')
 
 figure(Fig_Nyq)
-legend(legend_str,'interpreter','latex','Location','bestOutside')
+legend(legend_str_vec,'interpreter','latex','Location','bestOutside')
 
-legend(ax_r,legend_str,'interpreter','latex','Location','best')
-legend(ax_i,legend_str,'interpreter','latex','Location','best')
+legend(ax_r,legend_str_vec,'interpreter','latex','Location','best')
+legend(ax_i,legend_str_vec,'interpreter','latex','Location','best')
 
-legend(ax_mag1,legend_str,'interpreter','latex','Location','best')
-legend(ax_mag2,legend_str,'interpreter','latex','Location','best')
-legend(ax_mag3,legend_str,'interpreter','latex','Location','best')
+legend(ax_mag1,legend_str_vec,'interpreter','latex','Location','best')
+legend(ax_mag2,legend_str_vec,'interpreter','latex','Location','best')
+legend(ax_mag3,legend_str_vec,'interpreter','latex','Location','best')
 
 set(groot,'DefaultAxesColorOrder','remove')
 set(groot,'DefaultAxesLineStyleOrder','remove')

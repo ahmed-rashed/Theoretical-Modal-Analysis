@@ -1,5 +1,5 @@
 function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,HarmonicExcitation_title,f_label,x_label_rows,sameScale_y1, ...
-								     ignoreTransient)    %Optional arguments
+                                     ignoreTransient)    %Optional arguments
                               
 set(groot,'DefaultLineLineWidth',1);
 

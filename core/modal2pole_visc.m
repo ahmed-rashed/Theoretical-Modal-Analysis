@@ -18,7 +18,7 @@ s_q_pairs_col(2*p_overDamped_vec-1)=-zeta_p_col(p_overDamped_vec).*w_p_col(p_ove
 s_q_pairs_col(2*p_overDamped_vec)=-zeta_p_col(p_overDamped_vec).*w_p_col(p_overDamped_vec)-w_p_col(p_overDamped_vec).*sqrt(zeta_p_col(p_overDamped_vec).^2-1);
 
 if (nargin>2) && (nargout>1)
-    A_q_mat_pages=repelem(A_p_mat_pages,1,1,2);
+    A_q_mat_pages=repmat(A_p_mat_pages,1,1,2);
     A_q_mat_pages(:,:,2*p_underDamped_vec)=conj(A_p_mat_pages(:,:,p_underDamped_vec));
     A_q_mat_pages(:,:,2*p_overDamped_vec)=-A_p_mat_pages(:,:,p_overDamped_vec);
 end
