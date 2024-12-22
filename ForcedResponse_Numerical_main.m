@@ -18,42 +18,42 @@ K=1e2;
 
 [D_t,f_s,D_f]=samplingParameters_T_N(T,K);
 
-t_vec=(0:K-1)*D_t;
+t_col=(0:K-1).'*D_t;
 
 y_func_vec=cell(4);
-y_road_rows=zeros(1,K);T_2=.5*T_n;y_road_rows(t_vec<=T_2)=1;y_func_vec{1}=@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2);
-y_road_rows=[y_road_rows;zeros(1,K)];y_road_rows(2,1)=1;y_func_vec{2}=@(t_vec,zeta)SDOF_Vehicle_IRF(w_n,zeta,t_vec);
-y_road_rows=[y_road_rows;ones(1,K)];y_func_vec{3}=@(t_vec,zeta)SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec);
-w_0=.9*w_n;Y0=rand;y_road_rows=[y_road_rows;Y0*sin(w_0*t_vec)];y_func_vec{4}=@(t_vec,zeta)SDOF_Harmonic_Response_dot_Visc_mul_m(2*Y0*zeta*w_n,w_0,w_n,zeta,t_vec)+SDOF_Harmonic_Response_Visc_mul_m(Y0*w_n^2,w_0,w_n,zeta,t_vec);
+y_road_cols=zeros(K,1);T_2=.5*T_n;y_road_cols(t_col<=T_2)=1;y_func_vec{1}=@(t_col,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_col)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_col-T_2);
+y_road_cols=[y_road_cols,zeros(K,1)];y_road_cols(1,2)=1;y_func_vec{2}=@(t_col,zeta)SDOF_Vehicle_IRF(w_n,zeta,t_col);
+y_road_cols=[y_road_cols,ones(K,1)];y_func_vec{3}=@(t_col,zeta)SDOF_Vehicle_Step_Response(1,w_n,zeta,t_col);
+Omega=.9*w_n;Y0=rand;y_road_cols=[y_road_cols,Y0*sin(Omega*t_col)];y_func_vec{4}=@(t_col,zeta)SDOF_Harmonic_Response_dot_Visc_mul_m(2*Y0*zeta*w_n,Omega,w_n,zeta,t_col)+SDOF_Harmonic_Response_Visc_mul_m(Y0*w_n^2,Omega,w_n,zeta,t_col);
 
-for iii=1:size(y_road_rows,1)
+for iii=1:size(y_road_cols,2)
     figure
-    h_vec=SDOF_Vehicle_IRF(w_n,zeta,t_vec);
+    h_col=SDOF_Vehicle_IRF(w_n,zeta,t_col);
     subplot(3,1,1)
-    plot(t_vec/T_n,h_vec,'.-');
+    plot(t_col/T_n,h_col,'.-');
     ylabel('$h(t)$','interpreter','latex')
     grid
     set(gca,'XTickLabel',[]);
 
     subplot(3,1,2)
-    plot(t_vec/T_n,y_road_rows(iii,:),'.-');
+    plot(t_col/T_n,y_road_cols(:,iii),'.-');
     ylabel('$y_{\mathrm{R}}(t)$','interpreter','latex')
     set(gca,'XTickLabel',[]);
 
-    [y_vec_approx,t_z_vec]=forcedResponse(h_vec,y_road_rows(iii,:),D_t,bRaw);
+    [y_col_approx,t_z_col]=forcedResponse(h_col,y_road_cols(:,iii),D_t,bRaw);
     y_func=y_func_vec{iii};
-    y_vec_exact=y_func(t_z_vec,zeta);
+    y_col_exact=y_func(t_z_col,zeta);
 
     ax=subplot(3,1,3);
-    plot_response(t_z_vec,y_func_vec{iii},zeta,"$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}="+T_n+'$','','',1/T_n,ax,'southeast');
+    plot_response(t_z_col,y_func_vec{iii},zeta,"$t/T_{\mathrm{n}}\qquad,:T_{\mathrm{n}}=1/f_{\mathrm{n}}=2\pi/\omega_{\mathrm{n}}="+T_n+'$','','',1/T_n,ax,'southeast');
     ylabel('$y(t)$','interpreter','latex');
     grid on
 
     hold on
-    plot(t_z_vec/T_n,y_vec_approx,'.-');
+    plot(t_z_col/T_n,y_col_approx,'.-');
 
-    errr=y_vec_approx-y_vec_exact;
-    plot(t_z_vec/T_n,errr)
+    errr_col=y_col_approx-y_col_exact;
+    plot(t_z_col/T_n,errr_col)
 
     legend(["Theortical","Numerical","error"])
 

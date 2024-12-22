@@ -2,9 +2,7 @@ clearvars
 clc
 close all
 
-set(groot,'DefaultAxesColorOrder',[0,0,1;1,0,0;0,0.5,0;1,0,1])
 set(groot,'DefaultLineMarkerSize',5);
-set(groot,'DefaultLineLineWidth',1);
 
 f_final=40;
 n_f=8000;
@@ -45,17 +43,14 @@ for ii=1:length(m_row)
     plot_FRF_3d(f_col,H_cols(:,ii),'',H_subtitle,1,0);
     
     figure
-    ax_r=subplot(2,1,1);
-    ax_i=subplot(2,1,2);
-    plot_FRF_r_i(f_col,H_cols(:,ii),ax_r,ax_i,'',H_subtitle);
+    plot_FRF_r_i(f_col,H_cols(:,ii),[],[],'',H_subtitle);
     
     figure
     plot_FRF_Nyq(H_cols(:,ii),[],H_subtitle);
+    axis(gca,"padded")
 
     figure
-    ax_mag=subplot(4,1,[1,2,3]);
-    ax_phase=subplot(4,1,4);
-    plot_FRF_mag_phase(f_col,H_cols(:,ii),islin,ax_mag,ax_phase,'',H_subtitle);
+    plot_FRF_mag_phase(f_col,H_cols(:,ii),islin,[],[],'',H_subtitle);
 end
 
 filenames=["FRF-3D-1";"FRF-RealImag-1";"FRF-Nyq-1";"MDOF-FRFMag1"
@@ -75,6 +70,4 @@ c_vec=80*ones(1,N+1);
 MDOF_FRF_ModalSuperposition(f_col,H_cols_SDOF,m_row,n_row);
 export_figure((15:16),'==',["MDOF-FRFMag_ModalSuperPos1";"FRF-Nyq_ModalSuperPos1"])
 
-set(groot,'DefaultAxesColorOrder','remove')
 set(groot,'DefaultLineMarkerSize','remove');
-set(groot,'DefaultLineLineWidth','remove');

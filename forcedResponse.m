@@ -33,4 +33,7 @@ end
 
 if nargout>1
     t_vec=(0:K-1)*D_t;
+    if iscolumn(h_vec)
+        t_vec=t_vec.';
+    end
 end
