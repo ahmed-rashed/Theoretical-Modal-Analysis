@@ -47,9 +47,8 @@ for n=1:N_signals
         AX.YAxis(1).Color=AX.YAxis(2).Color;
         AX.YAxis(2).Color=colorTemp;
 
-        
         yyaxis right;
-        if length(f_rows_label_col)==1
+        if isscalar(f_rows_label_col)
             if ~isempty(f_rows_label_col{1})
                 ylabel(f_rows_label_col{1},'interpreter','latex');
             end
@@ -61,7 +60,7 @@ for n=1:N_signals
     end
     
     yyaxis left;
-    if length(x_rows_Latex_sym_col)==1
+    if isscalar(x_rows_Latex_sym_col)
         if ~isempty(x_rows_Latex_sym_col{1})
             ylabel(x_rows_Latex_sym_col{1},'interpreter','latex')
         end

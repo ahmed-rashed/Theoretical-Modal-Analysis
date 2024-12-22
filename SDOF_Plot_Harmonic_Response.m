@@ -1,10 +1,19 @@
-function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,HarmonicExcitation_title,f_label,x_label_rows,sameScale_y1, ...
-                                     ignoreTransient)    %Optional arguments
-                              
+function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,f_title_str,f_str,x_str,sameScale_y1, ...
+                                     ignoreTransient,sameScale_y2)    %Optional arguments
+
+if ~isstring(f_str),error('f_str must be string!'),end
+if ~isstring(f_title_str),error('f_title_str must be string!'),end
+if ~isstring(x_str),error('x_str must be string!'),end
+if ~isscalar(x_str),error('check this'),end
+
 set(groot,'DefaultLineLineWidth',1);
 
 if nargin<11
     ignoreTransient=false;
+end
+
+if nargin<12
+    sameScale_y2=true;
 end
 
 n_points=length(t_row);
@@ -19,25 +28,28 @@ else
 end
 
 if ignoreTransient
-    x_new_label_rows=strrep(x_label_rows,'(','_{\mathrm{ss}}(');
+    x_modified_str=strrep(x_str,'(','_{\mathrm{ss}}(');
 else
-    x_new_label_rows=x_label_rows;
+    x_modified_str=x_str;
 end
 
-figureTitle="$"+x_new_label_rows+'$ due to $'+HarmonicExcitation_title+'$ for '+zeta_expr;
+figureTitle="Harmonic";
+x_title_str="$"+x_modified_str+'$ due to $'+f_str+'$';
 if ignoreTransient && zeta==0
-    figureTitle=figureTitle+' \underline{(never coincides with $'+x_label_rows+'$, but matches $H(\omega)$)}';
+    x_title_str=x_title_str+' \underline{(never coincides with $'+x_str+'$, but matches $H(\omega)$)}';
+    figureTitle=figureTitle+" steady state";
 end
+figureTitle=figureTitle+' response for '+zeta_expr;
 
-f_rows_labels_col=strings(length(ii_row),1);
+r_str_col=strings(length(ii_row),1);
 x_rows=zeros(ii_row,n_points);
 f_rows=zeros(ii_row,n_points);
 for ii=1:ii_row
     x_rows(ii,:)=x_func(t_row,w_0_vec(ii));
     f_rows(ii,:)=f_func(t_row,w_0_vec(ii));
-    f_rows_labels_col(ii)="$"+f_label+',:r='+(w_0_vec(ii)/w_n)+'$';
+    r_str_col(ii)="$r="+(w_0_vec(ii)/w_n)+'$';
 end
 
-plot_Forced_Response_Vertically(t_row,x_rows,x_new_label_rows,f_rows,f_rows_labels_col,figureTitle,sameScale_y1);
+plot_Forced_Response_Vertically(t_row,x_rows,f_rows,figureTitle,f_title_str,r_str_col,x_title_str,sameScale_y1,sameScale_y2);
 
 set(groot,'DefaultLineLineWidth','remove')

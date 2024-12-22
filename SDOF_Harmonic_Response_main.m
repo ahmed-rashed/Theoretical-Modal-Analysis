@@ -12,7 +12,9 @@ t_row=linspace(0,t_final,n_points);
 
 gg=groot;
 
-f_str='f(t)=\sin(\Omega t)';
+f_str="f(t)";
+x_str="x(t)";
+f_title_str="$"+f_str+"=F_{0}\sin(\Omega t)=F_{0}\sin(r\omega_{\mathrm{n}}t)\quad,:r\equiv\frac{\Omega}{\omega_{\mathrm{n}}}$";
 
 %% Undamped SDOF
 zeta=0;
@@ -20,12 +22,12 @@ Omega_vec=[.1,.9,1,1.1,2]*w_n;
 ignoreTransient=true;
 x_func=@(t_row,Omega) SDOF_Harmonic_Response_Visc_mul_m(F0,Omega,w_n,zeta,t_row,ignoreTransient)/m;
 F_func=@(t_row,Omega) sin(Omega*t_row);
-figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_str,'f(t)','x(t)',false,ignoreTransient);
-figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_str,'f(t)','x(t)',true,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_title_str,f_str,x_str,false,ignoreTransient);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_title_str,f_str,x_str,true,ignoreTransient);
 
 x_func=@(t_row,Omega) SDOF_Harmonic_Response_Visc_mul_m(F0,Omega,w_n,zeta,t_row)/m;
-figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_str,'f(t)','x(t)',false);
-figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_str,'f(t)','x(t)',true);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_title_str,f_str,x_str,false);
+figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta,Omega_vec,f_title_str,f_str,x_str,true);
 figs=sort([gg.Children.Number]);export_figure(figs(end+(-4:1:-1)+1),'||',"Undamped"+(1:4));
 
 %% Damped SDOF
@@ -35,12 +37,11 @@ for n=1:N_zeta
 %     w_H_max=sqrt(1-2*zeta_vec(n)^2)*w_n;
 %     Omega_vec(2)=w_H_max;
     x_func=@(t_row,Omega) SDOF_Harmonic_Response_Visc_mul_m(F0,Omega,w_n,zeta_vec(n),t_row)/m;
-    figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta_vec(n),Omega_vec,f_str,'f(t)','x(t)',true);
+    figure;SDOF_Plot_Harmonic_Response(t_row,x_func,F_func,w_n,zeta_vec(n),Omega_vec,f_title_str,f_str,x_str,true);
     export_figure(gcf,'||',"Damped"+n)
 end
 
 %% Vibration Sensor
-f_str='y_{\mathrm{B}}(t)=\sin(\Omega t)';
 
 n_points=1000;
 t_row=linspace(0,t_final,n_points);
@@ -58,19 +59,26 @@ for n=1:N_zeta
     q_func=@(t_row,Omega) SDOF_Harmonic_Response_Visc_mul_m(Omega^2*Y0,Omega,w_n,zeta_vec(n),t_row);
 
     %Vibrometer response
+    f_str="y_{\mathrm{B}}(t)";
+    x_str="q(t+1.5T_{0})";
+    f_title_str="$"+f_str+"=Y_{0}\sin(\Omega t)=Y_{0}\sin(r\omega_{\mathrm{n}}t)\quad,:r\equiv\frac{\Omega}{\omega_{\mathrm{n}}}$";
     fig_vec(2*n-1)=figure;
-    SDOF_Plot_Harmonic_Response(t_row,@(t_row,Omega) q_func(t_row+1.5*2*pi/Omega,Omega),Disp_base_func,w_n,zeta_vec(n),Omega_vec,f_str,'y_{\mathrm{B}}(t)','q(t+1.5T_{0})',sameScale_y1);
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,Omega) q_func(t_row+1.5*2*pi/Omega,Omega),Disp_base_func,w_n,zeta_vec(n),Omega_vec,f_title_str,f_str,x_str,sameScale_y1);
     filenames(2*n-1)="Vibrometer"+n;
 
     %Accelerometer response
+    f_str="\ddot{y}_{\mathrm{B}}(t)";
+    x_str="q(t+0.5T_{0})";
+    f_title_str="$"+f_str+"=-\Omega^{2} Y_{0}\sin(\Omega t)=-\Omega^{2} Y_{0}\sin(r\omega_{\mathrm{n}}t)\quad,:r\equiv\frac{\Omega}{\omega_{\mathrm{n}}}$";
     fig_vec(2*n)=figure;
-    SDOF_Plot_Harmonic_Response(t_row,@(t_row,Omega) q_func(t_row+.5*2*pi/Omega,Omega),Acc_base_func,w_n,zeta_vec(n),Omega_vec,f_str,'\ddot{y}_{\mathrm{B}}(t)','q(t+0.5T_{0})',sameScale_y1);                                 
+    SDOF_Plot_Harmonic_Response(t_row,@(t_row,Omega) q_func(t_row+.5*2*pi/Omega,Omega),Acc_base_func,w_n,zeta_vec(n),Omega_vec,f_title_str,f_str,x_str,sameScale_y1,false,false);
     filenames(2*n)="Accelerometer"+n;
 end
 export_figure(fig_vec,'||',filenames)
 
 %% Moving vehicle
-f_str='y_{\mathrm{R}}(t)=\sin(\Omega t)';
+f_str="y_{\mathrm{R}}(t)";
+f_title_str="$"+f_str+"=Y_{0}\sin(\Omega t)=Y_{0}\sin(r\omega_{\mathrm{n}}t)\quad,:r\equiv\frac{\Omega}{\omega_{\mathrm{n}}}$";
 
 Omega_vec=[0.5,0.9,1,1.1,sqrt(2),2.5]*w_n;
 
@@ -87,11 +95,13 @@ for n=1:N_zeta
     y_Acc_Vehicle=@(t_row,Omega) SDOF_Vehicle_Harmonic_Acc_Response_Visc(Y0,Omega,w_n,zeta_vec(n),t_row);
 
     fig_vec(2*n-1)=figure;
-    SDOF_Plot_Harmonic_Response(t_row,y_Vehicle,y_road_func,w_n,zeta_vec(n),Omega_vec,f_str,'y_{\mathrm{R}}(t)','y(t)',sameScale_y1);
+    x_str="y(t)";
+    SDOF_Plot_Harmonic_Response(t_row,y_Vehicle,y_road_func,w_n,zeta_vec(n),Omega_vec,f_title_str,f_str,x_str,sameScale_y1);
     filenames(2*n-1)="VehicleResponse"+n;
 
     fig_vec(2*n)=figure;
-    SDOF_Plot_Harmonic_Response(t_row,y_Acc_Vehicle,y_road_func,w_n,zeta_vec(n),Omega_vec,f_str,'y_{\mathrm{R}}(t)','\ddot{y}(t)',sameScale_y1);
+    x_str="\ddot{y}(t)";
+    SDOF_Plot_Harmonic_Response(t_row,y_Acc_Vehicle,y_road_func,w_n,zeta_vec(n),Omega_vec,f_title_str,f_str,x_str,sameScale_y1);
     filenames(2*n)="VehicleACC"+n;
 end
 export_figure(fig_vec,'||',filenames)

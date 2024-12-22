@@ -1,103 +1,96 @@
-function plot_Forced_Response_Vertically(t_row,x_rows,x_rows_Latex_sym_col, ...
-                        f_rows,f_rows_label_col,axisTitle_latex,sameScale_y1) %Optional arguments
+function plot_Forced_Response_Vertically(t_row,x_rows, ...
+                        f_rows,title_str,f_title_str,r_str_col,x_title_str,sameScale_y1,sameScale_y2) %Optional arguments
 
-if nargin<4
+if nargin<3
     f_rows=[];
 end
 
-if nargin<7
-    sameScale_y1=false;
+if nargin<8
+    sameScale_y1=true;
 end
-if sameScale_y1
-    axisTitle_latex=axisTitle_latex+'; (same $'+x_rows_Latex_sym_col+'$ limits)';
+
+if nargin<9
+    sameScale_y2=true;
+end
+
+if ~sameScale_y1
+    x_title_str=x_title_str+'; (different limits)';
+end
+
+if ~sameScale_y2
+    f_title_str=f_title_str+'; (different limits)';
 end
 
 N_signals=size(x_rows,1);
 %figure
-yLimitsMin=inf;
-yLimitsMax=-inf;
-AX1=zeros(N_signals,1);
+oAx_vec=gobjects(N_signals,1);
+tile1=tiledlayout(N_signals,1,"TileSpacing","tight");
 for n=1:N_signals
-    subplot(N_signals,1,n)
-    if nargin<4 || isempty(f_rows)
+    oAx_vec(n)=nexttile;
+    if nargin<3 || isempty(f_rows)
         plot(t_row,x_rows(n,:));
-        AX1(n)=gca;
         
         if n~=N_signals
-            set(AX1(n),'XTickLabel',[]);
+            oAx_vec(n).XTickLabel=[];
         end
     else
+        yyaxis right
         if size(f_rows,1)==1
-            [AX,h1,h2]=plotyy(t_row,x_rows(n,:),t_row,f_rows);
+            h2=plot(t_row,f_rows);
         else
-            [AX,h1,h2]=plotyy(t_row,x_rows(n,:),t_row,f_rows(n,:));
+            h2=plot(t_row,f_rows(n,:));
         end
-        set(h1,'Color','r')
-        set(AX(1),'YColor','r')
-        set(h2,'Color','b')
-        set(AX(2),'YColor','b')
-        uistack(AX(1),'top')
-        colorTemp=AX(1).Color;
-        boxTemp=AX(1).Box;
-        visibleTemp=AX(1).XAxis.Visible;
-        AX(1).Color=AX(2).Color;
-        AX(2).Color=colorTemp;
-        AX(1).Box='off';
-        AX(2).Box='off';
-        AX(1).XAxis.Visible='on';
-        AX(2).XAxis.Visible='on';
-        AX(2).XAxisLocation='top';
-        set(AX(2),'XTickLabel',[]);
-        
-        AX1(n)=AX(1);
-        if isscalar(f_rows_label_col)
-            if ~isempty(f_rows_label_col{1})
-                ylabel(f_rows_label_col{1},'interpreter','latex');
+        if isscalar(r_str_col)
+            if r_str_col(1)~=""
+                ylabel(r_str_col(1),'interpreter','latex');
             end
-        elseif ~isempty(f_rows_label_col)
-            if ~isempty(f_rows_label_col(n))
-                ylabel(AX(2),f_rows_label_col{n},'interpreter','latex');
+        elseif ~isempty(r_str_col)
+            if r_str_col(n)~=""
+                ylabel(r_str_col(n),'interpreter','latex');
             end
         end
-        set(h1,'LineWidth',1.5*get(h2,'LineWidth'));
-        
-        %axis(AX(2),'tight');
-        ylim(AX(2),max(abs(ylim(AX(2))))*[-1,1]);
-        %set(AX(2),'YTickMode','auto');
+        ylim(max(abs(ylim))*[-1,1]);
+
+        yyaxis left
+        if all(isnan(x_rows(n,:)))
+            ylim(100*eps*[-1,1]);
+        else
+            h1=plot(t_row,x_rows(n,:));
+            set(h1,'LineWidth',3*get(h2,'LineWidth'));
+        end
 
         if n~=N_signals
-            for ss=1:2
-                set(AX(ss),'XTickLabel',[]);
-            end
+            set(oAx_vec(n),'XTickLabel',[]);
         end
     end
     
-    if ~isempty(x_rows_Latex_sym_col)
-        ylabel("$"+x_rows_Latex_sym_col+"$",'interpreter','latex')
+    if ~isempty(get(oAx_vec(n),'Children'))
+        axis('tight');
+        ylim(max(abs(ylim))*[-1,1]);
     end
-    
-    axis(AX1(n),'tight');
-
-    ylim(AX1(n),max(abs(ylim(AX1(n))))*[-1,1]);
-    set(AX1(n),'YTickMode','auto');
-
-    if sameScale_y1 && ~all(isnan(x_rows(n,:)))
-        yLimits=get(AX1(n),'ylim');
-        yLimitsMin=min(yLimitsMin,yLimits(1));
-        yLimitsMax=max(yLimitsMax,yLimits(2));
-    end
-    
-    %xlabel('$t$','interpreter','latex')
 end
 xlabel('$t$','interpreter','latex')
 
-if sameScale_y1 && yLimitsMin~=inf && yLimitsMax~=-inf
-    for n=1:N_signals
-        ylim(AX1(n),[yLimitsMin,yLimitsMax]);
-        set(AX1(n),'YTickMode','auto')
-    end
+if sameScale_y1
+    linkaxes(oAx_vec,'y');
 end
 
-if nargin>5 && ~isempty(axisTitle_latex)
-    title(AX1(1),axisTitle_latex,'interpreter','latex')
+if sameScale_y2
+    for n=1:N_signals
+        yyaxis(oAx_vec(n),"right");
+    end
+    linkaxes(oAx_vec,'y');
 end
+
+if nargin>4 && ~isempty(title_str)
+    title(tile1,title_str,'interpreter','latex')
+end
+
+ax_hidden=axes(tile1,'Visible','off');
+ax_hidden.Layout.TileSpan=[N_signals,1];
+
+yyaxis(ax_hidden,'left');
+ylabel([x_title_str;""],'interpreter','latex','FontSize',12,'Visible','on');
+
+yyaxis(ax_hidden,'right');
+ylabel(["";"";f_title_str],'interpreter','latex','FontSize',12,'Visible','on');

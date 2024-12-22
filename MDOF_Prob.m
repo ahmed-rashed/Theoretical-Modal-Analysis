@@ -52,8 +52,9 @@ legend(FRF_legend_str_vec,'interpreter','latex')
 %IRF
 h_cols=MDOF_IRF_Visc(s_q_vec,EigVectors_Normalized,t_row.',m_row,n_row);
 figure
+tiledlayout(n_RF_curves,1,"TileSpacing","tight")
 for n=1:n_RF_curves
-    subplot(n_RF_curves,1,n)
+    nexttile
     plot(t_row,h_cols(:,n).')
     ylabel(h_cols_Y_label_col(n),'interpreter','latex')
     if n==1
@@ -67,19 +68,20 @@ for n=1:n_RF_curves
 end
 
 %Response Labels
-x_ylabel_col=strings(N,1);
+x_str_col=strings(N,1);
 for ii=1:N
-    x_ylabel_col(ii)="$x_{"+ii+'}(t)$';
+    x_str_col(ii)="$x_{"+ii+'}(t)$';
 end
-x_new_ylabel_col=x_ylabel_col;
+x_modified_str_col=x_str_col;
 
 %Free response
 x_rows=MDOF_Free_Response_Visc(M_mat,C_mat,s_q_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row);
 figure
+tiledlayout(N,1,"TileSpacing","tight")
 for n=1:N
-    subplot(N,1,n)
+    nexttile
     plot(t_row,x_rows(n,:))
-    ylabel(x_ylabel_col(n),'interpreter','latex')
+    ylabel(x_str_col(n),'interpreter','latex')
     if n==1
         title('Free response','interpreter','latex')
     end
@@ -91,101 +93,112 @@ for n=1:N
 end
 
 %Harmonic response 1
+f_str="f_{1} (t)";
 F_0_col=zeros(N,1);
 F_0_col(1)=1;
 w_F1=[0.5,0.9,1,1.1,w_11_AR/w_p_vec(1),w_12_min/w_p_vec(1)]*w_p_vec(1);
 f_rows=zeros(N,n_points);
-x_rows1=zeros(N,n_points);
-x_rows2=zeros(N,n_points);
-f_rows_labels_col=strings(N,1);
+x_rows=zeros(N,n_points,2);
+r_str_col=strings(N,1);
 ignoreTransientVector=false;
 if all(all(abs(C_mat)<=10000*eps))
     ignoreTransientVector=[true,ignoreTransientVector];
 end
+f_title_str="$"+f_str+"=\sin\left(\Omega_{1} t\right)$";
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col(1)=strrep(x_ylabel_col(1),'(','^{\mathrm{ss}}(');
-        x_new_ylabel_col(2)=strrep(x_ylabel_col(2),'(','^{\mathrm{ss}}(');
+        x_modified_str_col=strrep(x_str_col,'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
-        x_new_ylabel_col=x_ylabel_col;
+        x_modified_str_col=x_str_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle1=x_new_ylabel_col(1)+' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$';
-    figureTitle2=x_new_ylabel_col(2)+' due to $f_{1} (t)=\sin\left(\Omega_{1}t\right)$';
-    if  all(all(abs(C_mat)<=10000*eps))
-        figureTitle1=figureTitle1+' for undamped system';
-        figureTitle2=figureTitle2+' for undamped system';
-    end
+    figureTitle="Harmonic";
+    x_title_str="$"+x_modified_str_col+' due to $'+f_str+'$';
 
     for sameScale_y1=sameScale_y1_Vector
-        if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
-            figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,1}(\omega)$)}';
-            figureTitle2=figureTitle2+' \underline{(never coincides with '+x_ylabel_col(2)+', but matches $H_{2,1}(\omega)$)}';
+        if  all(abs(C_mat)<=10000*eps,"all")
+            if ignoreTransient
+                x_title_str=x_title_str+' \underline{(never coincides with '+x_str_col+', but matches $H_{'+[1;2]+',1}(\omega)$)}';
+                figureTitle=figureTitle+" steady state";
+            end
+            if sameScale_y1==sameScale_y1_Vector(1)
+                figureTitle=figureTitle+' response for undamped system';
+            end
+        else
+            if sameScale_y1==sameScale_y1_Vector(1)
+                figureTitle=figureTitle+' response';
+            end
         end
 
         for ii=1:length(w_F1)
             if w_F1(ii)==w_p_vec(1)
-                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}=\omega_{1}$";
+                r_str_col(ii)="$\Omega_{1}=\omega_{1}$";
             else
-                f_rows_labels_col(ii)="$f_{1} (t),:\Omega_{1}="+(w_F1(ii)/w_p_vec(1))+'\omega_{1}$';
+                r_str_col(ii)="$\Omega_{1}="+(w_F1(ii)/w_p_vec(1))+'\omega_{1}$';
             end
             w_F_col=zeros(N,1);
             w_F_col(1)=w_F1(ii);
             f_rows(ii,:)=F_0_col(1)*sin(w_F_col(1)*t_row);
             x_rows_temp=MDOF_Harmonic_Response_Visc(s_q_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
-            x_rows1(ii,:)=x_rows_temp(1,:);
-            x_rows2(ii,:)=x_rows_temp(2,:);
+            x_rows(ii,:,1)=x_rows_temp(1,:);
+            x_rows(ii,:,2)=x_rows_temp(2,:);
         end
-        f_rows_labels_col(end-1)="$f_{1} (t),:\Omega_{1}=\omega_{1,1}^{\mathrm{AR}}$";
-        f_rows_labels_col(end)="$f_{1} (t),:\Omega_{1}=\omega_{1,2}^{\min}$";
-        figure
-        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col(1),f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
-        figure
-        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col(2),f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        r_str_col(end-1)="$\Omega_{1}=\omega_{1,1}^{\mathrm{AR}}$";
+        r_str_col(end)="$\Omega_{1}=\omega_{1,2}^{\min}$";
+        for nnn=1:2
+            figure
+            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle,f_title_str,r_str_col,x_title_str(nnn),sameScale_y1)
+        end
     end
 end
 
 %Harmonic response 2
+f_str="f_{2} (t)";
 F_0_col=zeros(N,1);
 F_0_col(2)=1;
 w_F2=[w_12_min/w_p_vec(2),w_22_AR/w_p_vec(2),0.95,1,1.05,1.5]*w_p_vec(2);
+f_title_str="$"+f_str+"=\sin\left(\Omega_{2} t\right)$";
 for ignoreTransient=ignoreTransientVector
     if ignoreTransient
-        x_new_ylabel_col(1)=strrep(x_ylabel_col(1),'(','^{\mathrm{ss}}(');
-        x_new_ylabel_col(2)=strrep(x_ylabel_col(2),'(','^{\mathrm{ss}}(');
+        x_modified_str_col=strrep(x_str_col,'(','^{\mathrm{ss}}(');
         sameScale_y1_Vector=true;
     else
-        x_new_ylabel_col=x_ylabel_col;
+        x_modified_str_col=x_str_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle1=x_new_ylabel_col(1)+' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$';
-    figureTitle2=x_new_ylabel_col(2)+' due to $f_{2} (t)=\sin\left(\Omega_{2}t\right)$';
-    if  all(all(abs(C_mat)<=10000*eps))
-        figureTitle1=figureTitle1+' for undamped system';
-        figureTitle2=figureTitle2+' for undamped system';
-    end
+    figureTitle="Harmonic";
+    x_title_str="$"+x_modified_str_col+' due to $'+f_str+'$';
 
     for sameScale_y1=sameScale_y1_Vector
-        if  ignoreTransient && all(all(abs(C_mat)<=10000*eps))
-            figureTitle1=figureTitle1+' \underline{(never coincides with '+x_ylabel_col(1)+', but matches $H_{1,2}(\omega)$)}';
-            figureTitle2=figureTitle2+' \underline{(never coincides with '+x_ylabel_col(2)+', but matches $H_{2,2}(\omega)$)}';
+        if  all(abs(C_mat)<=10000*eps,"all")
+            if ignoreTransient
+                x_title_str=x_title_str+' \underline{(never coincides with '+x_str_col+', but matches $H_{'+[1;2]+',2}(\omega)$)}';
+                figureTitle=figureTitle+" steady state";
+            end
+            if sameScale_y1==sameScale_y1_Vector(1)
+                figureTitle=figureTitle+' response for undamped system';
+            end
+        else
+            if sameScale_y1==sameScale_y1_Vector(1)
+                figureTitle=figureTitle+' response';
+            end
         end
 
         for ii=1:length(w_F2)
-            f_rows_labels_col(ii)="$f_{2} (t),:\Omega_{2}="+(w_F2(ii)/w_p_vec(2))+'\omega_{2}$';
+            r_str_col(ii)="$\Omega_{2}="+(w_F2(ii)/w_p_vec(2))+'\omega_{2}$';
             w_F_col=zeros(N,1);
             w_F_col(2)=w_F2(ii);
             f_rows(ii,:)=F_0_col(2)*sin(w_F_col(2)*t_row);
             x_rows_temp=MDOF_Harmonic_Response_Visc(s_q_vec,EigVectors_Normalized,F_0_col,w_F_col,t_row,ignoreTransient);
-            x_rows1(ii,:)=x_rows_temp(1,:);
-            x_rows2(ii,:)=x_rows_temp(2,:);
+            x_rows(ii,:,1)=x_rows_temp(1,:);
+            x_rows(ii,:,2)=x_rows_temp(2,:);
         end
-        f_rows_labels_col(1)="$f_{2} (t),:\Omega_{2}=\omega_{1,2}^{\min}$";
-        f_rows_labels_col(2)="$f_{2} (t),:\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$";
-        figure
-        plot_Forced_Response_Vertically(t_row,x_rows1,x_new_ylabel_col(1),f_rows,f_rows_labels_col,figureTitle1,sameScale_y1)
-        figure
-        plot_Forced_Response_Vertically(t_row,x_rows2,x_new_ylabel_col(2),f_rows,f_rows_labels_col,figureTitle2,sameScale_y1)
+        r_str_col(1)="$\Omega_{2}=\omega_{1,2}^{\min}$";
+        r_str_col(2)="$\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$";
+        for nnn=1:2
+            figure
+            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle,f_title_str,r_str_col,x_title_str(nnn),sameScale_y1)
+        end
     end
 end
