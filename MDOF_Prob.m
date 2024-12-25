@@ -22,7 +22,7 @@ w_column=2*pi*f_column;
 
 [EigVectors_Normalized,s_q_vec]=MDOF_Eig_Visc(M_mat,C_mat,K_mat,isProportional,display_EVD_Details);
 
-[w_p_vec,zeta_p_vec,w_d_p_vec]=pole2modal_visc(s_q_vec)
+[w_p_vec,zeta_p_vec,w_d_p_vec]=pole2modal_visc(s_q_vec) %#ok<NOPRT>
 
 %TF
 H_s_mat=MDOF_TF_Visc(s_q_vec,EigVectors_Normalized);
@@ -68,11 +68,7 @@ for n=1:n_RF_curves
 end
 
 %Response Labels
-x_str_col=strings(N,1);
-for ii=1:N
-    x_str_col(ii)="$x_{"+ii+'}(t)$';
-end
-x_modified_str_col=x_str_col;
+x_str_col="x_{"+(1:N).'+'}(t)';
 
 %Free response
 x_rows=MDOF_Free_Response_Visc(M_mat,C_mat,s_q_vec,EigVectors_Normalized,x_0_col,x_dot_0_col,t_row);
@@ -81,7 +77,7 @@ tiledlayout(N,1,"TileSpacing","tight")
 for n=1:N
     nexttile
     plot(t_row,x_rows(n,:))
-    ylabel(x_str_col(n),'interpreter','latex')
+    ylabel("$"+x_str_col(n)+'$','interpreter','latex')
     if n==1
         title('Free response','interpreter','latex')
     end
@@ -113,24 +109,13 @@ for ignoreTransient=ignoreTransientVector
         x_modified_str_col=x_str_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle="Harmonic";
-    x_title_str="$"+x_modified_str_col+' due to $'+f_str+'$';
+    x_title_str_col="$"+x_modified_str_col+'$';
+    figureTitle_col=["";""];
+    if  all(abs(C_mat)<=10000*eps,"all") && ignoreTransient
+        figureTitle_col="For undamped system, "+x_title_str_col+' never coincides with $'+x_str_col+'$';
+    end
 
     for sameScale_y1=sameScale_y1_Vector
-        if  all(abs(C_mat)<=10000*eps,"all")
-            if ignoreTransient
-                x_title_str=x_title_str+' \underline{(never coincides with '+x_str_col+', but matches $H_{'+[1;2]+',1}(\omega)$)}';
-                figureTitle=figureTitle+" steady state";
-            end
-            if sameScale_y1==sameScale_y1_Vector(1)
-                figureTitle=figureTitle+' response for undamped system';
-            end
-        else
-            if sameScale_y1==sameScale_y1_Vector(1)
-                figureTitle=figureTitle+' response';
-            end
-        end
-
         for ii=1:length(w_F1)
             if w_F1(ii)==w_p_vec(1)
                 r_str_col(ii)="$\Omega_{1}=\omega_{1}$";
@@ -148,7 +133,7 @@ for ignoreTransient=ignoreTransientVector
         r_str_col(end)="$\Omega_{1}=\omega_{1,2}^{\min}$";
         for nnn=1:2
             figure
-            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle,f_title_str,r_str_col,x_title_str(nnn),sameScale_y1)
+            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle_col(nnn),f_title_str,r_str_col,x_title_str_col(nnn),sameScale_y1)
         end
     end
 end
@@ -167,26 +152,19 @@ for ignoreTransient=ignoreTransientVector
         x_modified_str_col=x_str_col;
         sameScale_y1_Vector=[false,true];
     end
-    figureTitle="Harmonic";
-    x_title_str="$"+x_modified_str_col+' due to $'+f_str+'$';
+    x_title_str_col="$"+x_modified_str_col+'$';
+    figureTitle_col=["";""];
+    if  all(abs(C_mat)<=10000*eps,"all") && ignoreTransient
+        figureTitle_col="For undamped system, "+x_title_str_col+' never coincides with $'+x_str_col+'$';
+    end
 
     for sameScale_y1=sameScale_y1_Vector
-        if  all(abs(C_mat)<=10000*eps,"all")
-            if ignoreTransient
-                x_title_str=x_title_str+' \underline{(never coincides with '+x_str_col+', but matches $H_{'+[1;2]+',2}(\omega)$)}';
-                figureTitle=figureTitle+" steady state";
-            end
-            if sameScale_y1==sameScale_y1_Vector(1)
-                figureTitle=figureTitle+' response for undamped system';
-            end
-        else
-            if sameScale_y1==sameScale_y1_Vector(1)
-                figureTitle=figureTitle+' response';
-            end
-        end
-
         for ii=1:length(w_F2)
-            r_str_col(ii)="$\Omega_{2}="+(w_F2(ii)/w_p_vec(2))+'\omega_{2}$';
+            if w_F2(ii)==w_p_vec(2)
+                r_str_col(ii)="$\Omega_{2}=\omega_{2}$";
+            else
+                r_str_col(ii)="$\Omega_{2}="+(w_F2(ii)/w_p_vec(2))+'\omega_{2}$';
+            end
             w_F_col=zeros(N,1);
             w_F_col(2)=w_F2(ii);
             f_rows(ii,:)=F_0_col(2)*sin(w_F_col(2)*t_row);
@@ -198,7 +176,7 @@ for ignoreTransient=ignoreTransientVector
         r_str_col(2)="$\Omega_{2}=\omega_{2,2}^{\mathrm{AR}}$";
         for nnn=1:2
             figure
-            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle,f_title_str,r_str_col,x_title_str(nnn),sameScale_y1)
+            plot_Forced_Response_Vertically(t_row,x_rows(:,:,nnn),f_rows,figureTitle_col(nnn),f_title_str,r_str_col,x_title_str_col(nnn),sameScale_y1)
         end
     end
 end

@@ -37,17 +37,23 @@ grid on
 export_figure(gcf,'',"Vehicle_StepResponse")
 
 %% Moving Vehicle Obstacle Response
+
+figure
+tiledlayout("horizontal","TileSpacing","compact")
+
+ax1=nexttile;
 T_2=0.05*T_n;
-plot_response(t_col,@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2),zeta_row,x_label_str,'','',1/T_n,[],'northeast');
+plot_response(t_col,@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2),zeta_row,x_label_str,'','',1/T_n,ax1,'northeast');
 title("$y_{\mathrm{step}}\left(t\right)-y_{\mathrm{step}}\left(t-"+(T_2/T_n)+'T_{\mathrm{n}}\right)$ for $\omega_{n}='+w_n+'$ rad/sec','interpreter','latex');
 grid on
-% set(gca,'XAxisLocation','origin')
-ylim(2*[-1,1])
-export_figure(gcf,'',"Vehicle_StepResponse_1")
 
 T_2=.5*T_n;
-plot_response(t_col,@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2),zeta_row,x_label_str,'','',1/T_n,[],'southeast');
+ax2=nexttile;
+plot_response(t_col,@(t_vec,zeta) SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec)-SDOF_Vehicle_Step_Response(1,w_n,zeta,t_vec-T_2),zeta_row,x_label_str,'','',1/T_n,ax2,'southeast');
 title("$y_{\mathrm{step}}\left(t\right)-y_{\mathrm{step}}\left(t-"+(T_2/T_n)+'T_{\mathrm{n}}\right)$ for $\omega_{n}='+w_n+'$ rad/sec','interpreter','latex');
 grid on
-% set(gca,'XAxisLocation','origin')
-export_figure(gcf,'',"Vehicle_StepResponse_2")
+ax2.YTickLabel={};
+
+linkaxes([ax1,ax2],'xy')
+
+export_figure(gcf,'==',"Vehicle_ObstacleResponse")

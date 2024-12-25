@@ -4,7 +4,6 @@ function SDOF_Plot_Harmonic_Response(t_row,x_func,f_func,w_n,zeta,w_0_vec,f_titl
 if ~isstring(f_str),error('f_str must be string!'),end
 if ~isstring(f_title_str),error('f_title_str must be string!'),end
 if ~isstring(x_str),error('x_str must be string!'),end
-if ~isscalar(x_str),error('check this'),end
 
 set(groot,'DefaultLineLineWidth',1);
 
@@ -33,13 +32,11 @@ else
     x_modified_str=x_str;
 end
 
-figureTitle="Harmonic";
-x_title_str="$"+x_modified_str+'$ due to $'+f_str+'$';
+x_title_str="$"+x_modified_str+'$';
+figureTitle=zeta_expr;
 if ignoreTransient && zeta==0
-    x_title_str=x_title_str+' \underline{(never coincides with $'+x_str+'$, but matches $H(\omega)$)}';
-    figureTitle=figureTitle+" steady state";
+    figureTitle=zeta_expr+". "+x_title_str+' never coincides with $'+x_str+'$';
 end
-figureTitle=figureTitle+' response for '+zeta_expr;
 
 r_str_col=strings(length(ii_row),1);
 x_rows=zeros(ii_row,n_points);

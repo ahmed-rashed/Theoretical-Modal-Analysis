@@ -1,5 +1,7 @@
 function plot_Forced_Response_Vertically(t_row,x_rows, ...
-                        f_rows,title_str,f_title_str,r_str_col,x_title_str,sameScale_y1,sameScale_y2) %Optional arguments
+                        f_rows, ...                                 %Optional arguments
+                        title_str,f_title_str,r_str_col,x_title_str, ...
+                        sameScale_y1,sameScale_y2)
 
 if nargin<3
     f_rows=[];
